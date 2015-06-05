@@ -1,0 +1,275 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */ = {isa = PBXBuildFile; fileRef = CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */; };
+		CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "500px ScreenSaver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED7C3D61B21D2A20098027B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenSaver500pxView.h; sourceTree = "<group>"; };
+		CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreenSaver500pxView.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CED7C3CE1B21D2A20098027B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CED7C3C81B21D2A20098027B = {
+			isa = PBXGroup;
+			children = (
+				CED7C3D41B21D2A20098027B /* ScreenSaver */,
+				CED7C3D31B21D2A20098027B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CED7C3D31B21D2A20098027B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CED7C3D41B21D2A20098027B /* ScreenSaver */ = {
+			isa = PBXGroup;
+			children = (
+				CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */,
+				CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */,
+				CED7C3D51B21D2A20098027B /* Supporting Files */,
+			);
+			path = ScreenSaver;
+			sourceTree = "<group>";
+		};
+		CED7C3D51B21D2A20098027B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CED7C3D61B21D2A20098027B /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CED7C3CF1B21D2A20098027B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		CED7C3D11B21D2A20098027B /* ScreenSaver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CED7C3DD1B21D2A20098027B /* Build configuration list for PBXNativeTarget "ScreenSaver" */;
+			buildPhases = (
+				CED7C3CD1B21D2A20098027B /* Sources */,
+				CED7C3CE1B21D2A20098027B /* Frameworks */,
+				CED7C3CF1B21D2A20098027B /* Headers */,
+				CED7C3D01B21D2A20098027B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ScreenSaver;
+			productName = ScreenSaver;
+			productReference = CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CED7C3C91B21D2A20098027B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Сергей Галездинов";
+				TargetAttributes = {
+					CED7C3D11B21D2A20098027B = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+				};
+			};
+			buildConfigurationList = CED7C3CC1B21D2A20098027B /* Build configuration list for PBXProject "ScreenSaver" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CED7C3C81B21D2A20098027B;
+			productRefGroup = CED7C3D31B21D2A20098027B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CED7C3D11B21D2A20098027B /* ScreenSaver */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CED7C3D01B21D2A20098027B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CED7C3CD1B21D2A20098027B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		CED7C3DB1B21D2A20098027B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CED7C3DC1B21D2A20098027B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		CED7C3DE1B21D2A20098027B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DISPLAY_NAME = "500px ScreenSaver";
+				INFOPLIST_FILE = ScreenSaver/Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Screen Savers";
+				PRODUCT_NAME = "$(DISPLAY_NAME)";
+				WRAPPER_EXTENSION = saver;
+			};
+			name = Debug;
+		};
+		CED7C3DF1B21D2A20098027B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DISPLAY_NAME = "500px ScreenSaver";
+				INFOPLIST_FILE = ScreenSaver/Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Screen Savers";
+				PRODUCT_NAME = "$(DISPLAY_NAME)";
+				WRAPPER_EXTENSION = saver;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CED7C3CC1B21D2A20098027B /* Build configuration list for PBXProject "ScreenSaver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CED7C3DB1B21D2A20098027B /* Debug */,
+				CED7C3DC1B21D2A20098027B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CED7C3DD1B21D2A20098027B /* Build configuration list for PBXNativeTarget "ScreenSaver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CED7C3DE1B21D2A20098027B /* Debug */,
+				CED7C3DF1B21D2A20098027B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CED7C3C91B21D2A20098027B /* Project object */;
+}
