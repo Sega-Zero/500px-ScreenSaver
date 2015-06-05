@@ -9,10 +9,15 @@
 #import "FivehundredSource.h"
 #import "AFNetworking.h"
 #import "Collections+Debug.h"
+#import "Common.h"
+
+#define PAGE_COUNT 100
 
 @implementation FivehundredSource
 {
     BOOL _fetchingFeed;
+    BOOL _fetchedFeed;
+    NSInteger _currentPage;
     
     NSMutableArray *_randomizedPhotos;
     NSMutableArray *_readyPhotos;
@@ -60,7 +65,7 @@
     if (_randomizedPhotos.count > 0) {
         PhotoItem* nextPhoto = _randomizedPhotos.firstObject;
         [_randomizedPhotos removeObjectAtIndex:0];
-        NSLog(@"[500px] next photo choosen: %@.%@", nextPhoto.photoId, nextPhoto.title);
+        NSLog(@"[500px] next photo choosen: %llu.%@", nextPhoto.photoHashId, nextPhoto.title);
         
         _nextPhotoHandler = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -79,9 +84,14 @@
 - (void)commonInit
 {
     _fetchingFeed = NO;
+    _currentPage = 1;
+    
+    NSArray* saved = [NSKeyedUnarchiver unarchiveObjectWithFile:[kCachePath stringByAppendingPathComponent:@"savedFeed.plist"]];
+    if (![saved isKindOfClass:NSArray.class])
+        saved = nil;
     
     _randomizedPhotos = [NSMutableArray new];
-    _readyPhotos = [NSMutableArray new];
+    _readyPhotos = [saved mutableCopy] ?: [NSMutableArray new];
     _loadingPhotos = [NSMutableArray new];
     _parsedPhotos = [NSMutableArray new];
     
@@ -92,6 +102,16 @@
     _nextPhotoHandler = nil;
 
     [self fetchFeed];
+}
+
+- (void)saveFeed
+{
+    if (!dispatch_queue_get_specific(_queue, _queueTag)) {
+        dispatch_async(_queue, ^{ [self saveFeed]; });
+        return;
+    }
+
+    [NSKeyedArchiver archiveRootObject:_readyPhotos toFile:[kCachePath stringByAppendingPathComponent:@"savedFeed.plist"]];
 }
 
 NSString* userName(NSDictionary* item)
@@ -123,6 +143,15 @@ NSString* bestPhotoUrl(NSDictionary* item)
     return nil;
 }
 
+PhotoItem* photoById(NSArray* items, UInt64 n)
+{
+    for (PhotoItem* item in items)
+        if (item.photoHashId == n)
+            return item;
+
+    return nil;
+}
+
 - (void)parseFeed:(NSDictionary*)feed
 {
     if (!dispatch_queue_get_specific(_queue, _queueTag)) {
@@ -130,22 +159,49 @@ NSString* bestPhotoUrl(NSDictionary* item)
         return;
     }
     
+    if (!_fetchedFeed) {
+        _fetchedFeed = YES;
+        
+        _readyPhotos = [NSMutableArray new];
+        _randomizedPhotos = [NSMutableArray new];
+    }
+    
     NSArray* items = feed[@"photos"];
     
     NSLog(@"[500px] parse feed:");
     for (NSDictionary* item in items) {
+        UInt64 photoId = [item[@"id"] longLongValue];
+        if (photoById(_parsedPhotos, photoId) || photoById(_readyPhotos, photoId) || photoById(_loadingPhotos, photoId))
+            continue;
+        
         NSString* title = item[@"name"] ?: @"";
         NSString* text = item[@"description"] ?: @"";
         NSString* author = userName(item) ?: @"";
         NSString* photoUrl = bestPhotoUrl(item) ?: @"";
-        NSString* photoId = [item[@"id"] description] ?: @"";
+
+        /* filter out vertical photos
+        NSInteger width = [item[@"width"] integerValue];
+        NSInteger height = [item[@"height"] integerValue];
+        if (width < height)
+            continue;
+        */
 
         id ratingValue = item[@"rating"];
         NSString* rating = ratingValue ? [NSString stringWithFormat:@"%@", ratingValue] : @"";
         
-        PhotoItem* photoItem = [PhotoItem photoItemWithId:photoId title:title description:text author:author rating:rating photoUrl:photoUrl];
+        PhotoItem* photoItem = [PhotoItem photoItemWithHashId:photoId title:title description:text author:author rating:rating photoUrl:photoUrl];
         [_parsedPhotos addObject:photoItem];
-        NSLog(@"[500px] feed item: %@. %@", photoId, title);
+        NSLog(@"[500px] feed item: %llu. %@", photoId, title);
+    }
+    
+    NSInteger feedLength = _parsedPhotos.count + _loadingPhotos.count + _readyPhotos.count;
+    
+    if (feedLength < 500) {
+        _currentPage++;
+        NSLog(@"[500px] feed length - %d, too small, get the next page", (int)feedLength);
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self fetchFeed];
+        });
     }
     
     [self fetchNextPhoto];
@@ -161,6 +217,8 @@ NSString* bestPhotoUrl(NSDictionary* item)
     NSString *methodPhotos = @"/v1/photos";
     NSDictionary *params = @{@"feature": @"editors",
                              @"image_size[]": @"2048",
+                             @"rpp": @(PAGE_COUNT),
+                             @"page": @(_currentPage),
                              @"consumer_key": @"DI7ANAHTalF5WUsa7vdaHiY4tM8kwduHT08vDaJm"
                              };
     
@@ -195,8 +253,13 @@ NSString* bestPhotoUrl(NSDictionary* item)
     PhotoItem* nextPhoto = _parsedPhotos.firstObject;
     [_parsedPhotos removeObjectAtIndex:0];
     [_loadingPhotos addObject:nextPhoto];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:nextPhoto.cachedFilepath]) {
+        dispatch_async(_queue, ^{ [self didFetchedPhoto:nextPhoto]; });
+        return;
+    }
 
-    NSLog(@"[500px] fetch next photo: %@.%@ - %@, to %@", nextPhoto.photoId, nextPhoto.title, nextPhoto.photoUrl, nextPhoto.cachedFilepath);
+    NSLog(@"[500px] fetch next photo: %llu.%@ - %@, to %@", nextPhoto.photoHashId, nextPhoto.title, nextPhoto.photoUrl, nextPhoto.cachedFilepath);
 
     NSURL* url = [NSURL URLWithString:nextPhoto.photoUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -225,7 +288,7 @@ NSString* bestPhotoUrl(NSDictionary* item)
                                     if (!s_self)
                                         return;
                                     
-                                    NSLog(@"[500px] fetch next photo: %@. %@", nextPhoto.photoId, error ? @"failed" : @"completed");
+                                    NSLog(@"[500px] fetch next photo: %llu. %@", nextPhoto.photoHashId, error ? @"failed" : @"completed");
                                     [s_self didFetchedPhoto:nextPhoto];
                                 }];
     
@@ -241,6 +304,7 @@ NSString* bestPhotoUrl(NSDictionary* item)
 
     [_loadingPhotos removeObject:photoItem];
     [_readyPhotos addObject:photoItem];
+    [self saveFeed];
     
     NSLog(@"[500px] readyPhotos: %@", [_readyPhotos debugDescriptionCompact]);
     

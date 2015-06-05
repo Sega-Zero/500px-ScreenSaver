@@ -7,23 +7,7 @@
 //
 
 #import "PhotoSource.h"
-
-static NSString* s_cachePath = nil;
-__attribute__((constructor))
-static void initCachePath()
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    s_cachePath = [paths[0] stringByAppendingPathComponent:@"500px screensaver/"];
-    
-    if (s_cachePath.length > 0) {
-        NSFileManager* m = [NSFileManager defaultManager];
-        if (![m fileExistsAtPath:s_cachePath]) {
-            NSError *error = nil;
-            [m createDirectoryAtPath:s_cachePath withIntermediateDirectories:YES attributes:nil error:&error];
-            NSLog(@"[media preview] created %@ with %@", s_cachePath, error);
-        }
-    }
-}
+#import "Common.h"
 
 @implementation PhotoItem
 
@@ -38,9 +22,49 @@ static void initCachePath()
     return item;
 }
 
++ (PhotoItem*)photoItemWithHashId:(UInt64)photoHashId title:(NSString*)title description:(NSString*)description author:(NSString*)author rating:(NSString*)rating photoUrl:(NSString*)photoUrl
+{
+    PhotoItem* item = [PhotoItem new];
+    item->_photoHashId = photoHashId;
+    item->_photoId = [NSString stringWithFormat:@"%llu", item->_photoHashId];
+    item->_title = title;
+    item->_descriptionText = description;
+    item->_author = author;
+    item->_photoUrl = photoUrl;
+    return item;
+}
+
 - (NSString *)debugDescriptionCompact
 {
     return _photoId;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (!self)
+        return self;
+    
+    _title = [aDecoder decodeObjectForKey:@"t"];
+    _descriptionText = [aDecoder decodeObjectForKey:@"d"];
+    _author = [aDecoder decodeObjectForKey:@"a"];
+    _rating = [aDecoder decodeObjectForKey:@"r"];
+    _photoId = [aDecoder decodeObjectForKey:@"i"];
+    _photoHashId = [[aDecoder decodeObjectForKey:@"h"] unsignedLongLongValue];
+    _photoUrl = [aDecoder decodeObjectForKey:@"u"];
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:_title forKey:@"t"];
+    [aCoder encodeObject:_descriptionText forKey:@"d"];
+    [aCoder encodeObject:_author forKey:@"a"];
+    [aCoder encodeObject:_rating forKey:@"r"];
+    [aCoder encodeObject:_photoId forKey:@"i"];
+    [aCoder encodeObject:@(_photoHashId) forKey:@"h"];
+    [aCoder encodeObject:_photoUrl forKey:@"u"];
 }
 
 @end
@@ -49,7 +73,7 @@ static void initCachePath()
 
 - (NSString *)cachedFilepath
 {
-    return [s_cachePath stringByAppendingPathComponent:_photoId];
+    return [kCachePath stringByAppendingPathComponent:_photoId];
 }
 
 @end

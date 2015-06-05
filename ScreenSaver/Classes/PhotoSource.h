@@ -8,16 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PhotoItem: NSObject
+@interface PhotoItem: NSObject <NSCoding>
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) NSString *descriptionText;
 @property (nonatomic, readonly) NSString *author;
 @property (nonatomic, readonly) NSString *rating;
 @property (nonatomic, readonly) NSString *photoId;
+@property (nonatomic, readonly) UInt64    photoHashId;
 
 @property (nonatomic, readonly) NSString *photoUrl;
 
 + (PhotoItem*)photoItemWithId:(NSString*)photoId title:(NSString*)title description:(NSString*)description author:(NSString*)author rating:(NSString*)rating photoUrl:(NSString*)photoUrl;
++ (PhotoItem*)photoItemWithHashId:(UInt64)photoHashId title:(NSString*)title description:(NSString*)description author:(NSString*)author rating:(NSString*)rating photoUrl:(NSString*)photoUrl;
 @end
 
 typedef void (^PhotoSourceCompletion)(PhotoItem* photo, NSError* error);

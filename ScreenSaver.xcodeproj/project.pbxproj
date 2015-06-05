@@ -26,6 +26,9 @@
 		7C9C8BED1B22462D003D360C /* Collections+Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BEB1B22462D003D360C /* Collections+Debug.h */; };
 		7C9C8BEE1B22462D003D360C /* Collections+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BEC1B22462D003D360C /* Collections+Debug.m */; };
 		7C9C8BEF1B224794003D360C /* Collections+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BEC1B22462D003D360C /* Collections+Debug.m */; };
+		7C9C8BF41B226062003D360C /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BF21B226062003D360C /* Common.h */; };
+		7C9C8BF51B226062003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
+		7C9C8BF61B22611F003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
 		CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */ = {isa = PBXBuildFile; fileRef = CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */; };
 		CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
 /* End PBXBuildFile section */
@@ -46,6 +49,8 @@
 		7C9C8BE01B2219AA003D360C /* PhotoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoSource.m; path = Classes/PhotoSource.m; sourceTree = "<group>"; };
 		7C9C8BEB1B22462D003D360C /* Collections+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Collections+Debug.h"; path = "Classes/Collections+Debug.h"; sourceTree = "<group>"; };
 		7C9C8BEC1B22462D003D360C /* Collections+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Collections+Debug.m"; path = "Classes/Collections+Debug.m"; sourceTree = "<group>"; };
+		7C9C8BF21B226062003D360C /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		7C9C8BF31B226062003D360C /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
 		BB200605C8ED7CF3310B464F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		BD232B21C7FBACBF029F0689 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "500px ScreenSaver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +105,8 @@
 			children = (
 				7C9C8BA71B220037003D360C /* FivehundredSource.h */,
 				7C9C8BA81B220037003D360C /* FivehundredSource.m */,
+				7C9C8BF21B226062003D360C /* Common.h */,
+				7C9C8BF31B226062003D360C /* Common.m */,
 			);
 			name = 500pxSource;
 			sourceTree = "<group>";
@@ -187,6 +194,7 @@
 				7C9C8BA91B220037003D360C /* FivehundredSource.h in Headers */,
 				7C9C8BA51B21FEE9003D360C /* PhotoSource.h in Headers */,
 				CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */,
+				7C9C8BF41B226062003D360C /* Common.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C9C8BF61B22611F003D360C /* Common.m in Sources */,
 				7C9C8BEF1B224794003D360C /* Collections+Debug.m in Sources */,
 				7C9C8BE21B221A9D003D360C /* PhotoSource.m in Sources */,
 				7C9C8BDF1B221390003D360C /* PhotoSourceManager.m in Sources */,
@@ -337,6 +346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C9C8BF51B226062003D360C /* Common.m in Sources */,
 				7C9C8BEE1B22462D003D360C /* Collections+Debug.m in Sources */,
 				CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */,
 				7C9C8BAA1B220037003D360C /* FivehundredSource.m in Sources */,

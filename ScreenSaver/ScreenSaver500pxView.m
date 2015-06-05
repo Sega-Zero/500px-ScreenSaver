@@ -103,8 +103,23 @@
     [color setFill];
     [NSBezierPath fillRect:rect];
     
-    if (_activeImage)
-        [_activeImage drawInRect:rect];
+    if (_activeImage) {
+        CGSize imageSize = _activeImage.size;
+        CGRect targetRect = self.bounds;
+
+        CGFloat targetWidth = imageSize.width / imageSize.height * CGRectGetHeight(targetRect);
+        targetRect.origin.x = CGRectGetMidX(targetRect) - targetWidth / 2;
+        targetRect.size.width = targetWidth;
+        
+        if (targetRect.origin.x > 0) {
+            targetRect = self.bounds;
+            CGFloat targetHeight = imageSize.height / imageSize.width * CGRectGetWidth(targetRect);
+            targetRect.origin.y = CGRectGetMidY(targetRect) - targetHeight / 2;
+            targetRect.size.height = targetHeight;
+        }
+
+        [_activeImage drawInRect:targetRect];
+    }
 }
 
 - (void)animateOneFrame
