@@ -7,33 +7,140 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00A34B9296A663D19FB04E87 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFC8878B3B71B4B6E7BEFA /* libPods.a */; };
+		7C9C8BA51B21FEE9003D360C /* PhotoSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BA41B21FEE9003D360C /* PhotoSource.h */; };
+		7C9C8BA91B220037003D360C /* FivehundredSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BA71B220037003D360C /* FivehundredSource.h */; };
+		7C9C8BAA1B220037003D360C /* FivehundredSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BA81B220037003D360C /* FivehundredSource.m */; };
+		7C9C8BB51B22063C003D360C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BB41B22063C003D360C /* AppDelegate.m */; };
+		7C9C8BB71B22063C003D360C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BB61B22063C003D360C /* main.m */; };
+		7C9C8BB91B22063C003D360C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C9C8BB81B22063C003D360C /* Images.xcassets */; };
+		7C9C8BBC1B22063C003D360C /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C9C8BBA1B22063C003D360C /* MainMenu.xib */; };
+		7C9C8BD81B220A0C003D360C /* FivehundredSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BA81B220037003D360C /* FivehundredSource.m */; };
+		7C9C8BD91B220A0C003D360C /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
+		7C9C8BDA1B220A2B003D360C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFC8878B3B71B4B6E7BEFA /* libPods.a */; };
+		7C9C8BDD1B2211D6003D360C /* PhotoSourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BDB1B2211D6003D360C /* PhotoSourceManager.h */; };
+		7C9C8BDE1B2211D6003D360C /* PhotoSourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BDC1B2211D6003D360C /* PhotoSourceManager.m */; };
+		7C9C8BDF1B221390003D360C /* PhotoSourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BDC1B2211D6003D360C /* PhotoSourceManager.m */; };
+		7C9C8BE11B2219AA003D360C /* PhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BE01B2219AA003D360C /* PhotoSource.m */; };
+		7C9C8BE21B221A9D003D360C /* PhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BE01B2219AA003D360C /* PhotoSource.m */; };
+		7C9C8BED1B22462D003D360C /* Collections+Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BEB1B22462D003D360C /* Collections+Debug.h */; };
+		7C9C8BEE1B22462D003D360C /* Collections+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BEC1B22462D003D360C /* Collections+Debug.m */; };
+		7C9C8BEF1B224794003D360C /* Collections+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BEC1B22462D003D360C /* Collections+Debug.m */; };
 		CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */ = {isa = PBXBuildFile; fileRef = CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */; };
 		CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7C9C8BA41B21FEE9003D360C /* PhotoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoSource.h; path = Classes/PhotoSource.h; sourceTree = "<group>"; };
+		7C9C8BA71B220037003D360C /* FivehundredSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FivehundredSource.h; path = Classes/FivehundredSource.h; sourceTree = "<group>"; };
+		7C9C8BA81B220037003D360C /* FivehundredSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FivehundredSource.m; path = Classes/FivehundredSource.m; sourceTree = "<group>"; };
+		7C9C8BAF1B22063C003D360C /* ScreenSaverLoader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScreenSaverLoader.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C9C8BB21B22063C003D360C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C9C8BB31B22063C003D360C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7C9C8BB41B22063C003D360C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7C9C8BB61B22063C003D360C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7C9C8BB81B22063C003D360C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		7C9C8BBB1B22063C003D360C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		7C9C8BDB1B2211D6003D360C /* PhotoSourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoSourceManager.h; path = Classes/PhotoSourceManager.h; sourceTree = "<group>"; };
+		7C9C8BDC1B2211D6003D360C /* PhotoSourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoSourceManager.m; path = Classes/PhotoSourceManager.m; sourceTree = "<group>"; };
+		7C9C8BE01B2219AA003D360C /* PhotoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoSource.m; path = Classes/PhotoSource.m; sourceTree = "<group>"; };
+		7C9C8BEB1B22462D003D360C /* Collections+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Collections+Debug.h"; path = "Classes/Collections+Debug.h"; sourceTree = "<group>"; };
+		7C9C8BEC1B22462D003D360C /* Collections+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Collections+Debug.m"; path = "Classes/Collections+Debug.m"; sourceTree = "<group>"; };
+		BB200605C8ED7CF3310B464F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		BD232B21C7FBACBF029F0689 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "500px ScreenSaver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED7C3D61B21D2A20098027B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenSaver500pxView.h; sourceTree = "<group>"; };
 		CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreenSaver500pxView.m; sourceTree = "<group>"; };
+		FDAFC8878B3B71B4B6E7BEFA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7C9C8BAC1B22063C003D360C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C9C8BDA1B220A2B003D360C /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CED7C3CE1B21D2A20098027B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00A34B9296A663D19FB04E87 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A003FF4C284F24EB38E0C24 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BB200605C8ED7CF3310B464F /* Pods.debug.xcconfig */,
+				BD232B21C7FBACBF029F0689 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		7C9C8BA31B21FE7C003D360C /* PhotoSource */ = {
+			isa = PBXGroup;
+			children = (
+				7C9C8BA41B21FEE9003D360C /* PhotoSource.h */,
+				7C9C8BE01B2219AA003D360C /* PhotoSource.m */,
+				7C9C8BDB1B2211D6003D360C /* PhotoSourceManager.h */,
+				7C9C8BDC1B2211D6003D360C /* PhotoSourceManager.m */,
+			);
+			name = PhotoSource;
+			sourceTree = "<group>";
+		};
+		7C9C8BA61B21FFE6003D360C /* 500pxSource */ = {
+			isa = PBXGroup;
+			children = (
+				7C9C8BA71B220037003D360C /* FivehundredSource.h */,
+				7C9C8BA81B220037003D360C /* FivehundredSource.m */,
+			);
+			name = 500pxSource;
+			sourceTree = "<group>";
+		};
+		7C9C8BB01B22063C003D360C /* ScreenSaverLoader */ = {
+			isa = PBXGroup;
+			children = (
+				7C9C8BB31B22063C003D360C /* AppDelegate.h */,
+				7C9C8BB41B22063C003D360C /* AppDelegate.m */,
+				7C9C8BB81B22063C003D360C /* Images.xcassets */,
+				7C9C8BBA1B22063C003D360C /* MainMenu.xib */,
+				7C9C8BB11B22063C003D360C /* Supporting Files */,
+			);
+			path = ScreenSaverLoader;
+			sourceTree = "<group>";
+		};
+		7C9C8BB11B22063C003D360C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7C9C8BB21B22063C003D360C /* Info.plist */,
+				7C9C8BB61B22063C003D360C /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AD27FF8C493A653326C0B773 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FDAFC8878B3B71B4B6E7BEFA /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CED7C3C81B21D2A20098027B = {
 			isa = PBXGroup;
 			children = (
 				CED7C3D41B21D2A20098027B /* ScreenSaver */,
+				7C9C8BB01B22063C003D360C /* ScreenSaverLoader */,
 				CED7C3D31B21D2A20098027B /* Products */,
+				7A003FF4C284F24EB38E0C24 /* Pods */,
+				AD27FF8C493A653326C0B773 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -41,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */,
+				7C9C8BAF1B22063C003D360C /* ScreenSaverLoader.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +156,13 @@
 		CED7C3D41B21D2A20098027B /* ScreenSaver */ = {
 			isa = PBXGroup;
 			children = (
+				7C9C8BA61B21FFE6003D360C /* 500pxSource */,
+				7C9C8BA31B21FE7C003D360C /* PhotoSource */,
 				CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */,
 				CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */,
 				CED7C3D51B21D2A20098027B /* Supporting Files */,
+				7C9C8BEB1B22462D003D360C /* Collections+Debug.h */,
+				7C9C8BEC1B22462D003D360C /* Collections+Debug.m */,
 			);
 			path = ScreenSaver;
 			sourceTree = "<group>";
@@ -70,6 +182,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C9C8BED1B22462D003D360C /* Collections+Debug.h in Headers */,
+				7C9C8BDD1B2211D6003D360C /* PhotoSourceManager.h in Headers */,
+				7C9C8BA91B220037003D360C /* FivehundredSource.h in Headers */,
+				7C9C8BA51B21FEE9003D360C /* PhotoSource.h in Headers */,
 				CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,14 +193,33 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		7C9C8BAE1B22063C003D360C /* ScreenSaverLoader */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7C9C8BC91B22063C003D360C /* Build configuration list for PBXNativeTarget "ScreenSaverLoader" */;
+			buildPhases = (
+				7C9C8BAB1B22063C003D360C /* Sources */,
+				7C9C8BAC1B22063C003D360C /* Frameworks */,
+				7C9C8BAD1B22063C003D360C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ScreenSaverLoader;
+			productName = ScreenSaverLoader;
+			productReference = 7C9C8BAF1B22063C003D360C /* ScreenSaverLoader.app */;
+			productType = "com.apple.product-type.application";
+		};
 		CED7C3D11B21D2A20098027B /* ScreenSaver */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CED7C3DD1B21D2A20098027B /* Build configuration list for PBXNativeTarget "ScreenSaver" */;
 			buildPhases = (
+				D5F3231C7E8868D424D077AE /* Check Pods Manifest.lock */,
 				CED7C3CD1B21D2A20098027B /* Sources */,
 				CED7C3CE1B21D2A20098027B /* Frameworks */,
 				CED7C3CF1B21D2A20098027B /* Headers */,
 				CED7C3D01B21D2A20098027B /* Resources */,
+				F0B336DC80E4A07C0218AC28 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -104,6 +239,9 @@
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Сергей Галездинов";
 				TargetAttributes = {
+					7C9C8BAE1B22063C003D360C = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
 					CED7C3D11B21D2A20098027B = {
 						CreatedOnToolsVersion = 6.3.2;
 					};
@@ -115,6 +253,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = CED7C3C81B21D2A20098027B;
 			productRefGroup = CED7C3D31B21D2A20098027B /* Products */;
@@ -122,11 +261,21 @@
 			projectRoot = "";
 			targets = (
 				CED7C3D11B21D2A20098027B /* ScreenSaver */,
+				7C9C8BAE1B22063C003D360C /* ScreenSaverLoader */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7C9C8BAD1B22063C003D360C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C9C8BB91B22063C003D360C /* Images.xcassets in Resources */,
+				7C9C8BBC1B22063C003D360C /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CED7C3D01B21D2A20098027B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -136,18 +285,110 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D5F3231C7E8868D424D077AE /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F0B336DC80E4A07C0218AC28 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		7C9C8BAB1B22063C003D360C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C9C8BEF1B224794003D360C /* Collections+Debug.m in Sources */,
+				7C9C8BE21B221A9D003D360C /* PhotoSource.m in Sources */,
+				7C9C8BDF1B221390003D360C /* PhotoSourceManager.m in Sources */,
+				7C9C8BD81B220A0C003D360C /* FivehundredSource.m in Sources */,
+				7C9C8BD91B220A0C003D360C /* ScreenSaver500pxView.m in Sources */,
+				7C9C8BB71B22063C003D360C /* main.m in Sources */,
+				7C9C8BB51B22063C003D360C /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CED7C3CD1B21D2A20098027B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C9C8BEE1B22462D003D360C /* Collections+Debug.m in Sources */,
 				CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */,
+				7C9C8BAA1B220037003D360C /* FivehundredSource.m in Sources */,
+				7C9C8BDE1B2211D6003D360C /* PhotoSourceManager.m in Sources */,
+				7C9C8BE11B2219AA003D360C /* PhotoSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		7C9C8BBA1B22063C003D360C /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7C9C8BBB1B22063C003D360C /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		7C9C8BCA1B22063C003D360C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB200605C8ED7CF3310B464F /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ScreenSaverLoader/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		7C9C8BCB1B22063C003D360C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD232B21C7FBACBF029F0689 /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ScreenSaverLoader/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		CED7C3DB1B21D2A20098027B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -227,6 +468,7 @@
 		};
 		CED7C3DE1B21D2A20098027B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB200605C8ED7CF3310B464F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DISPLAY_NAME = "500px ScreenSaver";
@@ -239,6 +481,7 @@
 		};
 		CED7C3DF1B21D2A20098027B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD232B21C7FBACBF029F0689 /* Pods.release.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DISPLAY_NAME = "500px ScreenSaver";
@@ -252,6 +495,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7C9C8BC91B22063C003D360C /* Build configuration list for PBXNativeTarget "ScreenSaverLoader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7C9C8BCA1B22063C003D360C /* Debug */,
+				7C9C8BCB1B22063C003D360C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CED7C3CC1B21D2A20098027B /* Build configuration list for PBXProject "ScreenSaver" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -268,6 +520,7 @@
 				CED7C3DF1B21D2A20098027B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
