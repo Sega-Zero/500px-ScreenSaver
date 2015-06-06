@@ -34,6 +34,10 @@
 		CE8CD3FA1B23721C0015A8C9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CD3F91B23721C0015A8C9 /* Cocoa.framework */; };
 		CE8CD3FD1B2374250015A8C9 /* thumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = CE8CD3FB1B2374250015A8C9 /* thumbnail.png */; };
 		CE8CD3FE1B2374250015A8C9 /* thumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE8CD3FC1B2374250015A8C9 /* thumbnail@2x.png */; };
+		CE8CD4021B23A1B10015A8C9 /* PrefsSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8CD4041B23A1B10015A8C9 /* PrefsSheet.xib */; };
+		CE8CD4061B23A3750015A8C9 /* PrefsSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8CD4041B23A1B10015A8C9 /* PrefsSheet.xib */; };
+		CE8CD4091B23B3450015A8C9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE8CD4071B23B3450015A8C9 /* Localizable.strings */; };
+		CE8CD40B1B23B4870015A8C9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE8CD4071B23B3450015A8C9 /* Localizable.strings */; };
 		CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +70,10 @@
 		CE8CD3F91B23721C0015A8C9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CE8CD3FB1B2374250015A8C9 /* thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnail.png; sourceTree = "<group>"; };
 		CE8CD3FC1B2374250015A8C9 /* thumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail@2x.png"; sourceTree = "<group>"; };
+		CE8CD4031B23A1B10015A8C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PrefsSheet.xib; sourceTree = "<group>"; };
+		CE8CD4051B23A1BE0015A8C9 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PrefsSheet.strings; sourceTree = "<group>"; };
+		CE8CD4081B23B3450015A8C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CE8CD40A1B23B34F0015A8C9 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "500px ScreenSaver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED7C3D61B21D2A20098027B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenSaver500pxView.h; sourceTree = "<group>"; };
@@ -158,6 +166,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CE8CD4011B23A1650015A8C9 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				7C9C8BEB1B22462D003D360C /* Collections+Debug.h */,
+				7C9C8BEC1B22462D003D360C /* Collections+Debug.m */,
+				7C9C8BF71B232563003D360C /* NSObject+Conversion.h */,
+				7C9C8BF81B232563003D360C /* NSObject+Conversion.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		CED7C3C81B21D2A20098027B = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +200,7 @@
 		CED7C3D41B21D2A20098027B /* ScreenSaver */ = {
 			isa = PBXGroup;
 			children = (
+				CE8CD4011B23A1650015A8C9 /* Categories */,
 				7C9C8BA61B21FFE6003D360C /* 500pxSource */,
 				7C9C8BA31B21FE7C003D360C /* PhotoSource */,
 				CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */,
@@ -188,10 +208,6 @@
 				CE8CD3E71B22EEB20015A8C9 /* ScreenSaverLayerView.h */,
 				CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */,
 				CED7C3D51B21D2A20098027B /* Supporting Files */,
-				7C9C8BEB1B22462D003D360C /* Collections+Debug.h */,
-				7C9C8BEC1B22462D003D360C /* Collections+Debug.m */,
-				7C9C8BF71B232563003D360C /* NSObject+Conversion.h */,
-				7C9C8BF81B232563003D360C /* NSObject+Conversion.m */,
 			);
 			path = ScreenSaver;
 			sourceTree = "<group>";
@@ -199,6 +215,8 @@
 		CED7C3D51B21D2A20098027B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CE8CD4071B23B3450015A8C9 /* Localizable.strings */,
+				CE8CD4041B23A1B10015A8C9 /* PrefsSheet.xib */,
 				CE8CD3FB1B2374250015A8C9 /* thumbnail.png */,
 				CE8CD3FC1B2374250015A8C9 /* thumbnail@2x.png */,
 				7C9C8BB81B22063C003D360C /* Images.xcassets */,
@@ -270,6 +288,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = CED7C3C81B21D2A20098027B;
 			productRefGroup = CED7C3D31B21D2A20098027B /* Products */;
@@ -287,6 +306,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8CD4061B23A3750015A8C9 /* PrefsSheet.xib in Resources */,
+				CE8CD40B1B23B4870015A8C9 /* Localizable.strings in Resources */,
 				7C9C8BB91B22063C003D360C /* Images.xcassets in Resources */,
 				7C9C8BBC1B22063C003D360C /* MainMenu.xib in Resources */,
 			);
@@ -296,9 +317,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8CD4091B23B3450015A8C9 /* Localizable.strings in Resources */,
 				CE8CD3FD1B2374250015A8C9 /* thumbnail.png in Resources */,
 				CE8CD3F01B23572E0015A8C9 /* Images.xcassets in Resources */,
 				CE8CD3FE1B2374250015A8C9 /* thumbnail@2x.png in Resources */,
+				CE8CD4021B23A1B10015A8C9 /* PrefsSheet.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +402,24 @@
 				7C9C8BBB1B22063C003D360C /* Base */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		CE8CD4041B23A1B10015A8C9 /* PrefsSheet.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE8CD4031B23A1B10015A8C9 /* Base */,
+				CE8CD4051B23A1BE0015A8C9 /* ru */,
+			);
+			name = PrefsSheet.xib;
+			sourceTree = "<group>";
+		};
+		CE8CD4071B23B3450015A8C9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE8CD4081B23B3450015A8C9 /* Base */,
+				CE8CD40A1B23B34F0015A8C9 /* ru */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

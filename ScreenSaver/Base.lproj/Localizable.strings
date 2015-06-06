@@ -1,0 +1,84 @@
+/* title for Abstract category in preferences */
+"Abstract" = "Abstract";
+
+/* title for Animals category in preferences */
+"Animals" = "Animals";
+
+/* title for Black and White category in preferences */
+"Black and White" = "Black and White";
+
+/* title for Celebrities category in preferences */
+"Celebrities" = "Celebrities";
+
+/* title for City and Architecture category in preferences */
+"City and Architecture" = "City and Architecture";
+
+/* title for Commercial category in preferences */
+"Commercial" = "Commercial";
+
+/* title for Concert category in preferences */
+"Concert" = "Concert";
+
+/* title for Family category in preferences */
+"Family" = "Family";
+
+/* title for Fashion category in preferences */
+"Fashion" = "Fashion";
+
+/* title for Film category in preferences */
+"Film" = "Film";
+
+/* title for Fine Art category in preferences */
+"Fine Art" = "Fine Art";
+
+/* title for Food category in preferences */
+"Food" = "Food";
+
+/* title for Journalism category in preferences */
+"Journalism" = "Journalism";
+
+/* title for Landscapes category in preferences */
+"Landscapes" = "Landscapes";
+
+/* title for Macro category in preferences */
+"Macro" = "Macro";
+
+/* title for Nature category in preferences */
+"Nature" = "Nature";
+
+/* title for Nude category in preferences */
+"Nude" = "Nude";
+
+/* title for People category in preferences */
+"People" = "People";
+
+/* title for Performing Arts category in preferences */
+"Performing Arts" = "Performing Arts";
+
+/* title for Sport category in preferences */
+"Sport" = "Sport";
+
+/* title for Still Life category in preferences */
+"Still Life" = "Still Life";
+
+/* title for Street category in preferences */
+"Street" = "Street";
+
+/* title for Transportation category in preferences */
+"Transportation" = "Transportation";
+
+/* title for Travel category in preferences */
+"Travel" = "Travel";
+
+/* title for Uncategorized category in preferences */
+"Uncategorized" = "Uncategorized";
+
+/* title for Underwater category in preferences */
+"Underwater" = "Underwater";
+
+/* title for Urban Exploration category in preferences */
+"Urban Exploration" = "Urban Exploration";
+
+/* title for Wedding category in preferences */
+"Wedding" = "Wedding";
+

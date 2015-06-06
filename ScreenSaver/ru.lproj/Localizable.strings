@@ -1,0 +1,84 @@
+/* title for Abstract category in preferences */
+"Abstract" = "Абстрактные";
+
+/* title for Animals category in preferences */
+"Animals" = "Животные";
+
+/* title for Black and White category in preferences */
+"Black and White" = "Черно-белые";
+
+/* title for Celebrities category in preferences */
+"Celebrities" = "Знаменитости";
+
+/* title for City and Architecture category in preferences */
+"City and Architecture" = "Город и архитектура";
+
+/* title for Commercial category in preferences */
+"Commercial" = "Реклама";
+
+/* title for Concert category in preferences */
+"Concert" = "Концерт";
+
+/* title for Family category in preferences */
+"Family" = "Семья";
+
+/* title for Fashion category in preferences */
+"Fashion" = "Мода";
+
+/* title for Film category in preferences */
+"Film" = "Фильм";
+
+/* title for Fine Art category in preferences */
+"Fine Art" = "Изобразительное искусство";
+
+/* title for Food category in preferences */
+"Food" = "Еда";
+
+/* title for Journalism category in preferences */
+"Journalism" = "Журналистика";
+
+/* title for Landscapes category in preferences */
+"Landscapes" = "Пейзажи";
+
+/* title for Macro category in preferences */
+"Macro" = "Макросъемка";
+
+/* title for Nature category in preferences */
+"Nature" = "Природа";
+
+/* title for Nude category in preferences */
+"Nude" = "Ню";
+
+/* title for People category in preferences */
+"People" = "Люди";
+
+/* title for Performing Arts category in preferences */
+"Performing Arts" = "Исполнительское искусство";
+
+/* title for Sport category in preferences */
+"Sport" = "Спорт";
+
+/* title for Still Life category in preferences */
+"Still Life" = "Натюрморт";
+
+/* title for Street category in preferences */
+"Street" = "Улица";
+
+/* title for Transportation category in preferences */
+"Transportation" = "Транспорт";
+
+/* title for Travel category in preferences */
+"Travel" = "Путешествия";
+
+/* title for Uncategorized category in preferences */
+"Uncategorized" = "Без рубрики";
+
+/* title for Underwater category in preferences */
+"Underwater" = "Подводный мир";
+
+/* title for Urban Exploration category in preferences */
+"Urban Exploration" = "Городские пейзажи";
+
+/* title for Wedding category in preferences */
+"Wedding" = "Свадьбы";
+

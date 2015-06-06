@@ -247,12 +247,89 @@
 
 - (BOOL)hasConfigureSheet
 {
-    return NO;
+    return YES;
 }
 
 - (NSWindow*)configureSheet
 {
-    return nil;
+    ScreenSaverDefaults *defaults = [ScreenSaverDefaults defaultsForModuleWithName:[[NSBundle mainBundle] bundleIdentifier]];
+
+    if (!_prefsSheet)
+    {
+        NSArray *topLevels = nil;
+        NSNib *prefsNib = [[NSNib alloc] initWithNibNamed:@"PrefsSheet" bundle:[NSBundle bundleForClass:[self class]]];
+        if (![prefsNib instantiateWithOwner:self topLevelObjects:&topLevels])
+        {
+            NSLog( @"Failed to load configure sheet." );
+            NSBeep();
+        }
+    }
+
+    //see https://github.com/500px/api-documentation/blob/master/basics/formats_and_terms.md#categories
+    NSDictionary *categories = @{                                //this strings are for genstrings utility
+                                   @"Uncategorized"        : @0, //NSLocalizedString(@"Uncategorized", "title for Uncategorized category in preferences")
+                                   @"Abstract"             : @10,//NSLocalizedString(@"Abstract", "title for Abstract category in preferences")
+                                   @"Animals"              : @11,//NSLocalizedString(@"Animals", "title for Animals category in preferences")
+                                   @"Black and White"      : @5, //NSLocalizedString(@"Black and White", "title for Black and White category in preferences")
+                                   @"Celebrities"          : @1, //NSLocalizedString(@"Celebrities", "title for Celebrities category in preferences")
+                                   @"City and Architecture": @9, //NSLocalizedString(@"City and Architecture", "title for City and Architecture category in preferences")
+                                   @"Commercial"           : @15,//NSLocalizedString(@"Commercial", "title for Commercial category in preferences")
+                                   @"Concert"              : @16,//NSLocalizedString(@"Concert", "title for Concert category in preferences")
+                                   @"Family"               : @20,//NSLocalizedString(@"Family", "title for Family category in preferences")
+                                   @"Fashion"              : @14,//NSLocalizedString(@"Fashion", "title for Fashion category in preferences")
+                                   @"Film"                 : @2, //NSLocalizedString(@"Film", "title for Film category in preferences")
+                                   @"Fine Art"             : @24,//NSLocalizedString(@"Fine Art", "title for Fine Art category in preferences")
+                                   @"Food"                 : @23,//NSLocalizedString(@"Food", "title for Food category in preferences")
+                                   @"Journalism"           : @3, //NSLocalizedString(@"Journalism", "title for Journalism category in preferences")
+                                   @"Landscapes"           : @8, //NSLocalizedString(@"Landscapes", "title for Landscapes category in preferences")
+                                   @"Macro"                : @12,//NSLocalizedString(@"Macro", "title for Macro category in preferences")
+                                   @"Nature"               : @18,//NSLocalizedString(@"Nature", "title for Nature category in preferences")
+                                   @"Nude"                 : @4, //NSLocalizedString(@"Nude", "title for Nude category in preferences")
+                                   @"People"               : @7, //NSLocalizedString(@"People", "title for People category in preferences")
+                                   @"Performing Arts"      : @19,//NSLocalizedString(@"Performing Arts", "title for Performing Arts category in preferences")
+                                   @"Sport"                : @17,//NSLocalizedString(@"Sport", "title for Sport category in preferences")
+                                   @"Still Life"           : @6, //NSLocalizedString(@"Still Life", "title for Still Life category in preferences")
+                                   @"Street"               : @21,//NSLocalizedString(@"Street", "title for Street category in preferences")
+                                   @"Transportation"       : @26,//NSLocalizedString(@"Transportation", "title for Transportation category in preferences")
+                                   @"Travel"               : @13,//NSLocalizedString(@"Travel", "title for Travel category in preferences")
+                                   @"Underwater"           : @22,//NSLocalizedString(@"Underwater", "title for Underwater category in preferences")
+                                   @"Urban Exploration"    : @27,//NSLocalizedString(@"Urban Exploration", "title for Urban Exploration category in preferences")
+                                   @"Wedding"              : @25 //NSLocalizedString(@"Wedding", "title for Wedding category in preferences")
+                               };
+
+    NSMutableArray *menuItems = [NSMutableArray arrayWithCapacity:categories.count];
+
+    [categories enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [menuItems addObject:@{@"localized" : NSLocalizedStringFromTableInBundle(key, nil, [NSBundle bundleForClass:[self class]], ""), @"key" : key}];
+    }];
+
+    [menuItems sortUsingComparator:^NSComparisonResult(NSDictionary *obj1, NSDictionary *obj2) {
+        return [obj1[@"localized"] localizedStandardCompare:obj2[@"localized"]];
+    }];
+
+    NSInteger selectedIndex = [defaults integerForKey:@"category"];
+    [menuItems enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+        [_browseCategory addItemWithTitle:obj[@"localized"]];
+        NSMenuItem *item = [_browseCategory lastItem];
+        item.tag = [categories[obj[@"key"]] integerValue];
+        if (item.tag == selectedIndex)
+            [_browseCategory selectItem:item];
+    }];
+
+    return _prefsSheet;
+}
+
+#pragma mark preferences ui handlers
+
+- (IBAction)cancelClick:(id)sender {
+    [[NSApp mainWindow] endSheet:_prefsSheet];
+}
+
+- (IBAction)okClick:(id)sender {
+    ScreenSaverDefaults *defaults = [ScreenSaverDefaults defaultsForModuleWithName:[[NSBundle mainBundle] bundleIdentifier]];
+    [defaults setInteger:_browseCategory.selectedItem.tag forKey:@"category"];
+    [defaults synchronize];
+    [[NSApp mainWindow] endSheet:_prefsSheet];
 }
 
 @end

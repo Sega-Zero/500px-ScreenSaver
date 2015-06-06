@@ -10,4 +10,7 @@
 
 @interface ScreenSaver500pxView : ScreenSaverView
 
+@property (strong) IBOutlet NSPanel *prefsSheet;
+@property (strong) IBOutlet NSPopUpButton *browseCategory;
+
 @end
