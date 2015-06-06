@@ -131,7 +131,11 @@
     _fetchingFeed = NO;
     _currentPage = 1;
     _totalPages = 100;
-    
+
+    _queue = dispatch_queue_create("500px-source-queue", DISPATCH_QUEUE_SERIAL);
+    _queueTag = &_queueTag;
+    dispatch_queue_set_specific(_queue, _queueTag, _queueTag, nil);
+
     NSDictionary* saved = [NSKeyedUnarchiver unarchiveObjectWithFile:[kCachePath stringByAppendingPathComponent:@"state.plist"]];
     if ([saved isKindOfClass:NSDictionary.class]) {
         _photosFeed = [[saved[@"feed"] objectIfKindOfClass:NSArray.class] mutableCopy];
@@ -144,10 +148,6 @@
         _photosFeed = [NSMutableArray new];
         _nextPhotoIndex = 0;
     }
-    
-    _queue = dispatch_queue_create("500px-source-queue", DISPATCH_QUEUE_SERIAL);
-    _queueTag = &_queueTag;
-    dispatch_queue_set_specific(_queue, _queueTag, _queueTag, nil);
     
     _nextPhotoHandler = nil;
 
