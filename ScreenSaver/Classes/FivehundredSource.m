@@ -176,13 +176,15 @@
     }
     [activeNames addObject:@"state.plist"];
     
-    NSFileManager* m = [NSFileManager defaultManager];
-    NSArray* files = [m contentsOfDirectoryAtPath:kCachePath error:nil];
-    for (NSString* filename in files) {
-        NSString* pathname = [kCachePath stringByAppendingPathComponent:filename];
-        if (![activeNames containsObject:pathname])
-            [m removeItemAtPath:pathname error:nil];
-    }
+    dispatch_async(_queue, ^{
+        NSFileManager* m = [NSFileManager defaultManager];
+        NSArray* files = [m contentsOfDirectoryAtPath:kCachePath error:nil];
+        for (NSString* filename in files) {
+            NSString* pathname = [kCachePath stringByAppendingPathComponent:filename];
+            if (![activeNames containsObject:pathname])
+                [m removeItemAtPath:pathname error:nil];
+        }
+    });
 }
 
 #pragma mark - photos meta processing
