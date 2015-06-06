@@ -12,26 +12,33 @@
 #import "Common.h"
 #import "NSObject+Conversion.h"
 
-#define PAGE_COUNT 20
-#define FEED_COUNT 300
+#define PAGE_COUNT 30
+#define FEED_COUNT 20
+
+#if DEBUG
+#define LOG NSLog
+#else
+#define LOG(...) {}
+#endif
 
 @implementation FivehundredSource
 {
+    BOOL _cancelRequested;
+    NSMutableSet *_networkTasks;
     BOOL _fetchingFeed;
-    BOOL _fetchedFeed;
     NSInteger _currentPage;
     NSInteger _totalPages;
-    
-    NSMutableArray *_randomizedPhotos;
-    NSMutableArray *_readyPhotos;
-    NSMutableArray *_loadingPhotos;
-    NSMutableArray *_parsedPhotos;
-    
+
+    NSMutableArray *_photosFeed;
+    NSInteger _nextPhotoIndex;
+
     dispatch_queue_t _queue;
     void*            _queueTag;
     
     PhotoSourceCompletion _nextPhotoHandler;
 }
+
+#pragma mark - public methods
 
 - (instancetype)init
 {
@@ -44,8 +51,20 @@
     return self;
 }
 
+- (void)randomizeFeed:(NSMutableArray*)photosFeed
+{
+    NSUInteger count = photosFeed.count;
+    for (NSUInteger i = 0; i < count; ++i) {
+        NSUInteger j = arc4random() % count;
+        if (i != j)
+            [photosFeed exchangeObjectAtIndex:i withObjectAtIndex:j];
+    }
+}
+
 - (void)retrieveNextPhotoWithCompletion:(PhotoSourceCompletion)completionHandler
 {
+    _cancelRequested = NO;
+
     if (!completionHandler)
         return;
     
@@ -54,50 +73,77 @@
         return;
     }
     
-    if (_randomizedPhotos.count == 0 && _readyPhotos.count > 0) {
-        _randomizedPhotos = [_readyPhotos mutableCopy];
-        NSUInteger count = _randomizedPhotos.count;
-        for (NSUInteger x = 0; x < count; x++) {
-            NSUInteger n = arc4random() % count;
-            [_randomizedPhotos exchangeObjectAtIndex:x withObjectAtIndex:n];
-        }
-        NSLog(@"[500px] new not randomized photos: %@", [_readyPhotos debugDescriptionCompact]);
-        NSLog(@"[500px] new     randomized photos: %@", [_randomizedPhotos debugDescriptionCompact]);
-    }
+    if (_photosFeed.count - _nextPhotoIndex < 3)
+        [self fetchFeed];
     
-    if (_randomizedPhotos.count > 0) {
-        PhotoItem* nextPhoto = _randomizedPhotos.firstObject;
-        [_randomizedPhotos removeObjectAtIndex:0];
-        NSLog(@"[500px] next photo choosen: %llu.%@", nextPhoto.photoHashId, nextPhoto.title);
+    if (_photosFeed.count > 0) {
+        if (_nextPhotoIndex >= _photosFeed.count) {
+            [self randomizeFeed:_photosFeed];
+            _nextPhotoIndex %= _photosFeed.count;
+        }
         
-        _nextPhotoHandler = nil;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(nextPhoto, nil);
-        });
+        PhotoItem* nextPhoto = _photosFeed[_nextPhotoIndex];
+        if (nextPhoto.cached) {
+            LOG(@"[500px] next photo choosen: %llu.(%d)%@", nextPhoto.photoHashId, (int)_nextPhotoIndex, nextPhoto.title);
+            
+            ++_nextPhotoIndex;
+            _nextPhotoHandler = nil;
+            
+            [self fetchNextPhoto];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(nextPhoto, nil);
+            });
+            
+            return;
+        }
     }
-    else
-        _nextPhotoHandler = completionHandler;
+
+    _nextPhotoHandler = completionHandler;
 }
 
 - (void)cancelPhotoRequest
 {
-    
+    _cancelRequested = YES;
+    NSSet* tasks = [_networkTasks copy];
+    _networkTasks = [NSMutableSet new];
+    [tasks enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+        NSURLSessionDownloadTask* dl = [obj objectIfKindOfClass:NSURLSessionDownloadTask.class];
+        if (dl) {
+            [dl cancel];
+            return;
+        }
+        
+        NSURLSessionDataTask* dt = [obj objectIfKindOfClass:NSURLSessionDataTask.class];
+        if (dt) {
+            [dt cancel];
+            return;
+        }
+    }];
 }
+
+#pragma - initialization and state
 
 - (void)commonInit
 {
+    _cancelRequested = NO;
+    _networkTasks = [NSMutableSet new];
+
     _fetchingFeed = NO;
     _currentPage = 1;
-    _totalPages = 500;
+    _totalPages = 100;
     
-    NSArray* saved = [NSKeyedUnarchiver unarchiveObjectWithFile:[kCachePath stringByAppendingPathComponent:@"savedFeed.plist"]];
-    if (![saved isKindOfClass:NSArray.class])
-        saved = nil;
+    NSDictionary* saved = [NSKeyedUnarchiver unarchiveObjectWithFile:[kCachePath stringByAppendingPathComponent:@"state.plist"]];
+    if ([saved isKindOfClass:NSDictionary.class]) {
+        _photosFeed = [[saved[@"feed"] objectIfKindOfClass:NSArray.class] mutableCopy];
+        _nextPhotoIndex = [saved[@"next"] asInteger];
+
+        [self cleanupCache];
+    }
     
-    _randomizedPhotos = [NSMutableArray new];
-    _readyPhotos = [saved mutableCopy] ?: [NSMutableArray new];
-    _loadingPhotos = [NSMutableArray new];
-    _parsedPhotos = [NSMutableArray new];
+    if (_photosFeed == nil) {
+        _photosFeed = [NSMutableArray new];
+        _nextPhotoIndex = 0;
+    }
     
     _queue = dispatch_queue_create("500px-source-queue", DISPATCH_QUEUE_SERIAL);
     _queueTag = &_queueTag;
@@ -115,8 +161,31 @@
         return;
     }
 
-    [NSKeyedArchiver archiveRootObject:_readyPhotos toFile:[kCachePath stringByAppendingPathComponent:@"savedFeed.plist"]];
+    [NSKeyedArchiver archiveRootObject:@{@"feed": _photosFeed, @"next": @(_nextPhotoIndex)} toFile:[kCachePath stringByAppendingPathComponent:@"state.plist"]];
 }
+
+- (void)cleanupCache
+{
+    if (_photosFeed.count == 0)
+        return;
+    
+    NSMutableSet* activeNames = [NSMutableSet setWithCapacity:_photosFeed.count];
+    for (PhotoItem* item in _photosFeed) {
+        [activeNames addObject:item.cachedFilepath];
+        [activeNames addObject:item.cachedAuthorPicFilepath];
+    }
+    [activeNames addObject:@"state.plist"];
+    
+    NSFileManager* m = [NSFileManager defaultManager];
+    NSArray* files = [m contentsOfDirectoryAtPath:kCachePath error:nil];
+    for (NSString* filename in files) {
+        NSString* pathname = [kCachePath stringByAppendingPathComponent:filename];
+        if (![activeNames containsObject:pathname])
+            [m removeItemAtPath:pathname error:nil];
+    }
+}
+
+#pragma mark - photos meta processing
 
 NSString* userName(NSDictionary* item)
 {
@@ -171,22 +240,16 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
         dispatch_async(_queue, ^{ [self parseFeed:feed]; });
         return;
     }
-    
-    if (!_fetchedFeed) {
-        _fetchedFeed = YES;
-        
-        _readyPhotos = [NSMutableArray new];
-        _randomizedPhotos = [NSMutableArray new];
-    }
-    
+
     _totalPages = [feed[@"total_pages"] integerValue];
     
     NSArray* items = feed[@"photos"];
+    NSMutableArray* parsedFeed = [NSMutableArray new];
     
-    NSLog(@"[500px] parse feed:");
+    LOG(@"[500px] parse feed:");
     for (NSDictionary* item in items) {
         UInt64 photoId = [item[@"id"] asUInt64];
-        if (photoById(_parsedPhotos, photoId) || photoById(_readyPhotos, photoId) || photoById(_loadingPhotos, photoId))
+        if (photoById(_photosFeed, photoId))
             continue;
         
         NSString* title = toSafeString(item[@"name"]);
@@ -195,31 +258,37 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
         NSString* authorPic = toSafeString(userPic(item));
         NSString* photoUrl = toSafeString(bestPhotoUrl(item));
 
-        /* filter out vertical photos
+        /* filter out vertical photos */
         NSInteger width = [item[@"width"] asInteger];
         NSInteger height = [item[@"height"] asInteger];
         if (width < height)
             continue;
-        */
+        //*/
 
         NSString* rating = toSafeString(item[@"rating"]);
         
         PhotoItem* photoItem = [PhotoItem photoItemWithHashId:photoId title:title description:text author:author authorPic:authorPic rating:rating photoUrl:photoUrl];
-        [_parsedPhotos addObject:photoItem];
-        NSLog(@"[500px] feed item: %llu. %@", photoId, title);
+        [parsedFeed addObject:photoItem];
+        LOG(@"[500px] feed item: %llu. %@", photoId, title);
     }
     
-    NSInteger feedLength = _parsedPhotos.count + _loadingPhotos.count + _readyPhotos.count;
-    
-    if (feedLength < FEED_COUNT) {
-        _currentPage++;
-        NSLog(@"[500px] feed length - %d, too small, get the next page", (int)feedLength);
+    if (parsedFeed.count < FEED_COUNT) {
+        _currentPage = arc4random() % _totalPages;
+        LOG(@"[500px] feed length - %d, too small, get the next page", (int)parsedFeed.count);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self fetchFeed];
         });
     }
     
+    [self randomizeFeed:parsedFeed];
+    _photosFeed = parsedFeed;
+    _nextPhotoIndex = 0;
+    _fetchingFeed = NO;
+    
+    [self saveFeed];
+    
     [self fetchNextPhoto];
+    [self checkAwaiters];
 }
 
 - (void)fetchFeed
@@ -238,21 +307,23 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
                              @"consumer_key": @"DI7ANAHTalF5WUsa7vdaHiY4tM8kwduHT08vDaJm"
                              };
     
-    NSLog(@"[500px] fetching feed");
+    LOG(@"[500px] fetching feed");
     AFHTTPSessionManager* manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseUrl];
-    [manager GET:methodPhotos parameters:params
+    NSURLSessionDataTask* task = [manager GET:methodPhotos parameters:params
          success:^(NSURLSessionDataTask *task, id responseObject) {
-             _fetchingFeed = NO;
-
-             NSLog(@"[500px] feed received");
+             LOG(@"[500px] feed received");
+             [_networkTasks removeObject:task];
              [self parseFeed:responseObject];
          }
          failure:^(NSURLSessionDataTask *task, NSError *error) {
+             LOG(@"[500px] feed fetching failed");
+             [_networkTasks removeObject:task];
              _fetchingFeed = NO;
-
-             NSLog(@"[500px] feed fetching failed");
          }];
+    [_networkTasks addObject:task];
 }
+
+#pragma mark - photos payload handling
 
 - (void)fetchNextPhoto
 {
@@ -261,23 +332,44 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
         return;
     }
 
-    if (_parsedPhotos.count == 0) {
-        NSLog(@"[500px] no more photos to fetch");
+    if (_photosFeed.count == 0) {
+        LOG(@"[500px] no more photos to fetch");
         return;
     }
 
-    PhotoItem* nextPhoto = _parsedPhotos.firstObject;
-    [_parsedPhotos removeObjectAtIndex:0];
-    [_loadingPhotos addObject:nextPhoto];
+    PhotoItem* nextPhoto = nil;
+    
+    for (NSInteger n = 0; n < 3; ++n) {
+        PhotoItem* photo = _photosFeed[(_nextPhotoIndex + n) % _photosFeed.count];
+        if (!photo.cached) {
+            nextPhoto = photo;
+            break;
+        }
+    }
+    
+    if (!nextPhoto)
+        return;
     
     [self fetchAuthorPic:nextPhoto];
+    [self fetchPhoto:nextPhoto];
+}
+
+- (void)fetchPhoto:(PhotoItem*)nextPhoto
+{
+    if (!dispatch_get_specific(_queueTag)) {
+        dispatch_async(_queue, ^{ [self fetchNextPhoto]; });
+        return;
+    }
+    
+    if (_cancelRequested)
+        return;
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:nextPhoto.cachedFilepath]) {
         dispatch_async(_queue, ^{ [self didFetchedPhoto:nextPhoto]; });
         return;
     }
 
-    NSLog(@"[500px] fetch next photo: %llu.%@ - %@, to %@", nextPhoto.photoHashId, nextPhoto.title, nextPhoto.photoUrl, nextPhoto.cachedFilepath);
+    LOG(@"[500px] fetch next photo: %llu.%@ - %@, to %@", nextPhoto.photoHashId, nextPhoto.title, nextPhoto.photoUrl, nextPhoto.cachedFilepath);
 
     NSURL* url = [NSURL URLWithString:nextPhoto.photoUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -285,7 +377,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     __weak id w_self = self;
     
     AFURLSessionManager* manager = [[AFURLSessionManager alloc] init];
-    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil
+    __block NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil
                                 destination:^NSURL *(NSURL *targetPath, NSURLResponse *response)
                                 {
                                     NSFileManager* m = [NSFileManager defaultManager];
@@ -306,10 +398,13 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
                                     if (!s_self)
                                         return;
                                     
-                                    NSLog(@"[500px] fetch next photo: %llu. %@", nextPhoto.photoHashId, error ? @"failed" : @"completed");
+                                    LOG(@"[500px] fetch next photo: %llu. %@", nextPhoto.photoHashId, error ? @"failed" : @"completed");
+                                    [s_self->_networkTasks removeObject:downloadTask];
+                                    
                                     [s_self didFetchedPhoto:nextPhoto];
                                 }];
     
+    [_networkTasks addObject:downloadTask];
     [downloadTask resume];
 }
 
@@ -320,7 +415,15 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
         return;
     }
     
-    NSLog(@"[500px] fetch authorpic: %llu. - %@, to %@", photoItem.photoHashId, photoItem.authorPicUrl, photoItem.cachedAuthorPicFilepath);
+    if (_cancelRequested)
+        return;
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:photoItem.cachedAuthorPicFilepath]) {
+        dispatch_async(_queue, ^{ [self didFetchedPhoto:photoItem]; });
+        return;
+    }
+    
+    LOG(@"[500px] fetch authorpic: %llu. - %@, to %@", photoItem.photoHashId, photoItem.authorPicUrl, photoItem.cachedAuthorPicFilepath);
 
     NSURL* url = [NSURL URLWithString:photoItem.authorPicUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -328,7 +431,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     __weak id w_self = self;
     
     AFURLSessionManager* manager = [[AFURLSessionManager alloc] init];
-    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil
+    __block NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil
                                 destination:^NSURL *(NSURL *targetPath, NSURLResponse *response)
                                 {
                                     NSFileManager* m = [NSFileManager defaultManager];
@@ -349,7 +452,8 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
                                     if (!s_self)
                                         return;
                                     
-                                    NSLog(@"[500px] fetch authorpic: %llu. %@", photoItem.photoHashId, error ? @"failed" : @"completed");
+                                    LOG(@"[500px] fetch authorpic: %llu. %@", photoItem.photoHashId, error ? @"failed" : @"completed");
+                                    [s_self->_networkTasks removeObject:downloadTask];
                                     
                                     NSString* cachedFilepath = photoItem.cachedAuthorPicFilepath;
                                     NSFileManager* m = [NSFileManager defaultManager];
@@ -358,6 +462,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
 
                                     [s_self didFetchedPhoto:photoItem];
                                 }];
+    [_networkTasks addObject:downloadTask];
     [downloadTask resume];
 }
 
@@ -368,17 +473,8 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
         return;
     }
     
-    NSFileManager* m = [NSFileManager defaultManager];
-    BOOL completed = [m fileExistsAtPath:photoItem.cachedFilepath isDirectory:NULL] &&
-                     [m fileExistsAtPath:photoItem.cachedAuthorPicFilepath isDirectory:NULL];
-    if (!completed)
+    if (!photoItem.cached)
         return;
-    
-    [_loadingPhotos removeObject:photoItem];
-    [_readyPhotos addObject:photoItem];
-    [self saveFeed];
-    
-    NSLog(@"[500px] readyPhotos: %@", [_readyPhotos debugDescriptionCompact]);
     
     [self checkAwaiters];
     [self fetchNextPhoto];
@@ -386,8 +482,9 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
 
 - (void)checkAwaiters
 {
+    // check if photo was requested by consumer and feed'em
     if (_nextPhotoHandler) {
-        NSLog(@"[500px] call the awaiting completion handler");
+        LOG(@"[500px] call the awaiting completion handler");
         [self retrieveNextPhotoWithCompletion:_nextPhotoHandler];
     }
 }

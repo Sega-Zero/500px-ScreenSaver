@@ -28,6 +28,7 @@ typedef void (^PhotoSourceCompletion)(PhotoItem* photo, NSError* error);
 @interface PhotoItem (Cache)
 @property (nonatomic, readonly) NSString *cachedFilepath;
 @property (nonatomic, readonly) NSString *cachedAuthorPicFilepath;
+@property (nonatomic, readonly) BOOL cached;
 @end
 
 @protocol PhotoSource <NSObject>

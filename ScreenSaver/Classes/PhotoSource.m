@@ -85,4 +85,12 @@
     return [[kCachePath stringByAppendingPathComponent:_photoId] stringByAppendingString:@".author"];
 }
 
+- (BOOL)cached
+{
+    NSFileManager* m = [NSFileManager defaultManager];
+    BOOL completed = [m fileExistsAtPath:self.cachedFilepath isDirectory:NULL] &&
+                     [m fileExistsAtPath:self.cachedAuthorPicFilepath isDirectory:NULL];
+    return completed;
+}
+
 @end
