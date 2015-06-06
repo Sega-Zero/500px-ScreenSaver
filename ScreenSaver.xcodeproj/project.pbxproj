@@ -30,6 +30,9 @@
 		7C9C8BF51B226062003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
 		7C9C8BF61B22611F003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
 		CE8CD3E61B2267C40015A8C9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */; };
+		CE8CD3E91B22EEB20015A8C9 /* ScreenSaverLayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CD3E71B22EEB20015A8C9 /* ScreenSaverLayerView.h */; };
+		CE8CD3EA1B22EEB20015A8C9 /* ScreenSaverLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */; };
+		CE8CD3EB1B22F05E0015A8C9 /* ScreenSaverLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */; };
 		CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */ = {isa = PBXBuildFile; fileRef = CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */; };
 		CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
 /* End PBXBuildFile section */
@@ -55,6 +58,8 @@
 		BB200605C8ED7CF3310B464F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		BD232B21C7FBACBF029F0689 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CE8CD3E71B22EEB20015A8C9 /* ScreenSaverLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenSaverLayerView.h; sourceTree = "<group>"; };
+		CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenSaverLayerView.m; sourceTree = "<group>"; };
 		CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "500px ScreenSaver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED7C3D61B21D2A20098027B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenSaver500pxView.h; sourceTree = "<group>"; };
@@ -171,6 +176,8 @@
 				7C9C8BA31B21FE7C003D360C /* PhotoSource */,
 				CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */,
 				CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */,
+				CE8CD3E71B22EEB20015A8C9 /* ScreenSaverLayerView.h */,
+				CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */,
 				CED7C3D51B21D2A20098027B /* Supporting Files */,
 				7C9C8BEB1B22462D003D360C /* Collections+Debug.h */,
 				7C9C8BEC1B22462D003D360C /* Collections+Debug.m */,
@@ -194,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C9C8BED1B22462D003D360C /* Collections+Debug.h in Headers */,
+				CE8CD3E91B22EEB20015A8C9 /* ScreenSaverLayerView.h in Headers */,
 				7C9C8BDD1B2211D6003D360C /* PhotoSourceManager.h in Headers */,
 				7C9C8BA91B220037003D360C /* FivehundredSource.h in Headers */,
 				7C9C8BA51B21FEE9003D360C /* PhotoSource.h in Headers */,
@@ -335,6 +343,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8CD3EB1B22F05E0015A8C9 /* ScreenSaverLayerView.m in Sources */,
 				7C9C8BF61B22611F003D360C /* Common.m in Sources */,
 				7C9C8BEF1B224794003D360C /* Collections+Debug.m in Sources */,
 				7C9C8BE21B221A9D003D360C /* PhotoSource.m in Sources */,
@@ -352,6 +361,7 @@
 			files = (
 				7C9C8BF51B226062003D360C /* Common.m in Sources */,
 				7C9C8BEE1B22462D003D360C /* Collections+Debug.m in Sources */,
+				CE8CD3EA1B22EEB20015A8C9 /* ScreenSaverLayerView.m in Sources */,
 				CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */,
 				7C9C8BAA1B220037003D360C /* FivehundredSource.m in Sources */,
 				7C9C8BDE1B2211D6003D360C /* PhotoSourceManager.m in Sources */,
