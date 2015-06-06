@@ -25,6 +25,7 @@
     ScreenSaverLayerView *_imageLayerView;
     NSImageView *_authorAvatar;
     NSTextField *_authorName, *_photoDescription;
+    NSImageView *_loadingImageView;
 }
 
 #pragma mark view & layer methods
@@ -93,7 +94,29 @@
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=0)-[_authorName]-10-[_authorAvatar]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_authorAvatar, _authorName)]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_photoDescription]-5-[_authorName]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_photoDescription, _authorName)]];
 
+        _loadingImageView = [[NSImageView alloc] initWithFrame:NSZeroRect];
+        _loadingImageView.translatesAutoresizingMaskIntoConstraints = NO;
+        _loadingImageView.image = [NSImage imageNamed:@"Logo"];
+        _loadingImageView.alphaValue = 0;
+        [self addSubview:_loadingImageView];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_loadingImageView
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.
+                                                          constant:0]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_loadingImageView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.
+                                                          constant:0]];
+
+
         [self retrieveNextPhoto];
+        [self animateLoading];
     }
     return self;
 }
@@ -120,6 +143,8 @@
             NSImage* image = [[NSImage alloc] initWithContentsOfFile:photo.cachedFilepath];
             NSImage* authorImage = [[NSImage alloc] initWithContentsOfFile:photo.cachedAuthorPicFilepath];
             dispatch_async(dispatch_get_main_queue(), ^{
+                _loadingImageView.alphaValue = 0;
+
                 _fetchingImage = NO;
                 if (!image) {
                     [self retrieveNextPhoto];
@@ -145,10 +170,11 @@
 {
     _activeImage = image;
     _activeImageShownAt = [NSDate timeIntervalSinceReferenceDate];
-    _authorAvatar.alphaValue = 0;
-    _authorName.alphaValue = 0;
-    _photoDescription.alphaValue = 0;
+
     [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+        _authorAvatar.animator.alphaValue = 0;
+        _authorName.animator.alphaValue = 0;
+        _photoDescription.animator.alphaValue = 0;
         [_imageLayerView adoptLayerGravity:_activeImage.size];
         _imageLayerView.animator.layer.contents = [_activeImage layerContentsForContentsScale:[_activeImage recommendedLayerContentsScale:0]];
     } completionHandler:^{
@@ -183,6 +209,19 @@
     [self retrieveNextPhoto];
 }
 
+- (void)animateLoading
+{
+    if (!_activeImage)
+        [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+            context.duration = 1.2;
+            _loadingImageView.animator.alphaValue = _loadingImageView.alphaValue > 0.2 ? 0.2 : 1;
+        } completionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self animateLoading];
+            });
+        }];
+}
+
 #pragma mark screensaver override methods
 
 - (NSTimeInterval)animationTimeInterval
@@ -198,6 +237,7 @@
 - (void)stopAnimation
 {
     [super stopAnimation];
+    [[PhotoSourceManager shared] cancelPhotoRequest];
 }
 
 - (void)animateOneFrame
