@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00A34B9296A663D19FB04E87 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFC8878B3B71B4B6E7BEFA /* libPods.a */; };
-		7C9C8BA51B21FEE9003D360C /* PhotoSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BA41B21FEE9003D360C /* PhotoSource.h */; };
-		7C9C8BA91B220037003D360C /* FivehundredSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BA71B220037003D360C /* FivehundredSource.h */; };
 		7C9C8BAA1B220037003D360C /* FivehundredSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BA81B220037003D360C /* FivehundredSource.m */; };
 		7C9C8BB51B22063C003D360C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BB41B22063C003D360C /* AppDelegate.m */; };
 		7C9C8BB71B22063C003D360C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BB61B22063C003D360C /* main.m */; };
@@ -18,26 +16,24 @@
 		7C9C8BD81B220A0C003D360C /* FivehundredSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BA81B220037003D360C /* FivehundredSource.m */; };
 		7C9C8BD91B220A0C003D360C /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
 		7C9C8BDA1B220A2B003D360C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFC8878B3B71B4B6E7BEFA /* libPods.a */; };
-		7C9C8BDD1B2211D6003D360C /* PhotoSourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BDB1B2211D6003D360C /* PhotoSourceManager.h */; };
 		7C9C8BDE1B2211D6003D360C /* PhotoSourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BDC1B2211D6003D360C /* PhotoSourceManager.m */; };
 		7C9C8BDF1B221390003D360C /* PhotoSourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BDC1B2211D6003D360C /* PhotoSourceManager.m */; };
 		7C9C8BE11B2219AA003D360C /* PhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BE01B2219AA003D360C /* PhotoSource.m */; };
 		7C9C8BE21B221A9D003D360C /* PhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BE01B2219AA003D360C /* PhotoSource.m */; };
-		7C9C8BED1B22462D003D360C /* Collections+Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BEB1B22462D003D360C /* Collections+Debug.h */; };
 		7C9C8BEE1B22462D003D360C /* Collections+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BEC1B22462D003D360C /* Collections+Debug.m */; };
 		7C9C8BEF1B224794003D360C /* Collections+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BEC1B22462D003D360C /* Collections+Debug.m */; };
-		7C9C8BF41B226062003D360C /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BF21B226062003D360C /* Common.h */; };
 		7C9C8BF51B226062003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
 		7C9C8BF61B22611F003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
-		7C9C8BF91B232563003D360C /* NSObject+Conversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BF71B232563003D360C /* NSObject+Conversion.h */; };
 		7C9C8BFA1B232563003D360C /* NSObject+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF81B232563003D360C /* NSObject+Conversion.m */; };
 		7C9C8BFB1B2327ED003D360C /* NSObject+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF81B232563003D360C /* NSObject+Conversion.m */; };
 		CE8CD3E61B2267C40015A8C9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */; };
-		CE8CD3E91B22EEB20015A8C9 /* ScreenSaverLayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CD3E71B22EEB20015A8C9 /* ScreenSaverLayerView.h */; };
 		CE8CD3EA1B22EEB20015A8C9 /* ScreenSaverLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */; };
 		CE8CD3EB1B22F05E0015A8C9 /* ScreenSaverLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */; };
 		CE8CD3F01B23572E0015A8C9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C9C8BB81B22063C003D360C /* Images.xcassets */; };
-		CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */ = {isa = PBXBuildFile; fileRef = CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */; };
+		CE8CD3F81B2372150015A8C9 /* ScreenSaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CD3F71B2372150015A8C9 /* ScreenSaver.framework */; };
+		CE8CD3FA1B23721C0015A8C9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CD3F91B23721C0015A8C9 /* Cocoa.framework */; };
+		CE8CD3FD1B2374250015A8C9 /* thumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = CE8CD3FB1B2374250015A8C9 /* thumbnail.png */; };
+		CE8CD3FE1B2374250015A8C9 /* thumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE8CD3FC1B2374250015A8C9 /* thumbnail@2x.png */; };
 		CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
 /* End PBXBuildFile section */
 
@@ -50,7 +46,7 @@
 		7C9C8BB31B22063C003D360C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7C9C8BB41B22063C003D360C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7C9C8BB61B22063C003D360C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		7C9C8BB81B22063C003D360C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ScreenSaverLoader/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		7C9C8BB81B22063C003D360C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ScreenSaver/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		7C9C8BBB1B22063C003D360C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		7C9C8BDB1B2211D6003D360C /* PhotoSourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoSourceManager.h; path = Classes/PhotoSourceManager.h; sourceTree = "<group>"; };
 		7C9C8BDC1B2211D6003D360C /* PhotoSourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoSourceManager.m; path = Classes/PhotoSourceManager.m; sourceTree = "<group>"; };
@@ -66,6 +62,10 @@
 		CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CE8CD3E71B22EEB20015A8C9 /* ScreenSaverLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenSaverLayerView.h; sourceTree = "<group>"; };
 		CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenSaverLayerView.m; sourceTree = "<group>"; };
+		CE8CD3F71B2372150015A8C9 /* ScreenSaver.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScreenSaver.framework; path = System/Library/Frameworks/ScreenSaver.framework; sourceTree = SDKROOT; };
+		CE8CD3F91B23721C0015A8C9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		CE8CD3FB1B2374250015A8C9 /* thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnail.png; sourceTree = "<group>"; };
+		CE8CD3FC1B2374250015A8C9 /* thumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail@2x.png"; sourceTree = "<group>"; };
 		CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "500px ScreenSaver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED7C3D61B21D2A20098027B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenSaver500pxView.h; sourceTree = "<group>"; };
@@ -86,6 +86,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8CD3FA1B23721C0015A8C9 /* Cocoa.framework in Frameworks */,
+				CE8CD3F81B2372150015A8C9 /* ScreenSaver.framework in Frameworks */,
 				CE8CD3E61B2267C40015A8C9 /* QuartzCore.framework in Frameworks */,
 				00A34B9296A663D19FB04E87 /* libPods.a in Frameworks */,
 			);
@@ -148,6 +150,8 @@
 		AD27FF8C493A653326C0B773 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE8CD3F91B23721C0015A8C9 /* Cocoa.framework */,
+				CE8CD3F71B2372150015A8C9 /* ScreenSaver.framework */,
 				CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */,
 				FDAFC8878B3B71B4B6E7BEFA /* libPods.a */,
 			);
@@ -195,6 +199,8 @@
 		CED7C3D51B21D2A20098027B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CE8CD3FB1B2374250015A8C9 /* thumbnail.png */,
+				CE8CD3FC1B2374250015A8C9 /* thumbnail@2x.png */,
 				7C9C8BB81B22063C003D360C /* Images.xcassets */,
 				CED7C3D61B21D2A20098027B /* Info.plist */,
 			);
@@ -202,24 +208,6 @@
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
-
-/* Begin PBXHeadersBuildPhase section */
-		CED7C3CF1B21D2A20098027B /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7C9C8BED1B22462D003D360C /* Collections+Debug.h in Headers */,
-				CE8CD3E91B22EEB20015A8C9 /* ScreenSaverLayerView.h in Headers */,
-				7C9C8BDD1B2211D6003D360C /* PhotoSourceManager.h in Headers */,
-				7C9C8BA91B220037003D360C /* FivehundredSource.h in Headers */,
-				7C9C8BF91B232563003D360C /* NSObject+Conversion.h in Headers */,
-				7C9C8BA51B21FEE9003D360C /* PhotoSource.h in Headers */,
-				CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */,
-				7C9C8BF41B226062003D360C /* Common.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		7C9C8BAE1B22063C003D360C /* ScreenSaverLoader */ = {
@@ -246,7 +234,6 @@
 				D5F3231C7E8868D424D077AE /* Check Pods Manifest.lock */,
 				CED7C3CD1B21D2A20098027B /* Sources */,
 				CED7C3CE1B21D2A20098027B /* Frameworks */,
-				CED7C3CF1B21D2A20098027B /* Headers */,
 				CED7C3D01B21D2A20098027B /* Resources */,
 				F0B336DC80E4A07C0218AC28 /* Copy Pods Resources */,
 			);
@@ -309,7 +296,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8CD3FD1B2374250015A8C9 /* thumbnail.png in Resources */,
 				CE8CD3F01B23572E0015A8C9 /* Images.xcassets in Resources */,
+				CE8CD3FE1B2374250015A8C9 /* thumbnail@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
