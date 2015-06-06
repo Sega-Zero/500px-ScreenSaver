@@ -28,9 +28,12 @@
     BOOL _fetchingFeed;
     NSInteger _currentPage;
     NSInteger _totalPages;
+    
+    NSTimeInterval _lastSaveFeed;
 
     NSMutableArray *_photosFeed;
     NSInteger _nextPhotoIndex;
+    NSInteger _indexToContinue; // if no downloaded photos available, save the position and spin for the start
 
     dispatch_queue_t _queue;
     void*            _queueTag;
@@ -53,11 +56,21 @@
 
 - (void)randomizeFeed:(NSMutableArray*)photosFeed
 {
-    NSUInteger count = photosFeed.count;
-    for (NSUInteger i = 0; i < count; ++i) {
-        NSUInteger j = arc4random() % count;
-        if (i != j)
-            [photosFeed exchangeObjectAtIndex:i withObjectAtIndex:j];
+    [self randomizeFeed:photosFeed inRange:NSMakeRange(0, photosFeed.count)];
+}
+
+- (void)randomizeFeed:(NSMutableArray*)photosFeed inRange:(NSRange)range
+{
+    if (_photosFeed.count == 0 || range.length == 0 || range.location + range.length >= _photosFeed.count)
+        return;
+    NSUInteger base = range.location;
+    NSUInteger count = range.length;
+    for (NSUInteger cycles = 0; cycles < 3; ++cycles) {
+        for (NSUInteger i = 0; i < count; ++i) {
+            NSUInteger j = arc4random() % count;
+            if (i != j)
+                [photosFeed exchangeObjectAtIndex:i + base withObjectAtIndex:j + base];
+        }
     }
 }
 
@@ -83,12 +96,29 @@
         }
         
         PhotoItem* nextPhoto = _photosFeed[_nextPhotoIndex];
+        BOOL cached = nextPhoto.cached;
+        if (!cached) {
+            if (_nextPhotoIndex > 1) {
+                // if the user has some network issues and forthcoming photo still not cached, we'll spin available photos once again
+                // but remember the position we interrupted on to resume from that point
+                if (_indexToContinue == -1)
+                    _indexToContinue = _nextPhotoIndex;
+                
+                [self randomizeFeed:_photosFeed inRange:NSMakeRange(0, _nextPhotoIndex)];
+                
+                _nextPhotoIndex = 0;
+                nextPhoto = _photosFeed[_nextPhotoIndex];
+                cached = nextPhoto.cached;
+            }
+        }
+        
         if (nextPhoto.cached) {
             LOG(@"[500px] next photo choosen: %llu.(%d)%@", nextPhoto.photoHashId, (int)_nextPhotoIndex, nextPhoto.title);
             
             ++_nextPhotoIndex;
             _nextPhotoHandler = nil;
-            
+
+            [self saveFeedThrottled];
             [self fetchNextPhoto];
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(nextPhoto, nil);
@@ -141,6 +171,8 @@
     if ([saved isKindOfClass:NSDictionary.class]) {
         _photosFeed = [[saved[@"feed"] objectIfKindOfClass:NSArray.class] mutableCopy];
         _nextPhotoIndex = [saved[@"next"] asInteger];
+        if (_nextPhotoIndex > 2)
+            [self randomizeFeed:_photosFeed inRange:NSMakeRange(0, _nextPhotoIndex)];
 
         [self cleanupCache];
     }
@@ -150,9 +182,22 @@
         _nextPhotoIndex = 0;
     }
     
+    _indexToContinue = -1;
+    
     _nextPhotoHandler = nil;
 
-    [self fetchFeed];
+    if (_photosFeed == nil)
+        [self fetchFeed];
+}
+
+- (void)saveFeedThrottled
+{
+    NSTimeInterval elapsed = [NSDate timeIntervalSinceReferenceDate] - _lastSaveFeed;
+    if (elapsed < 20)
+        return;
+    
+    _lastSaveFeed = [NSDate timeIntervalSinceReferenceDate];
+    [self saveFeed];
 }
 
 - (void)saveFeed
@@ -175,7 +220,7 @@
         [activeNames addObject:item.cachedFilepath];
         [activeNames addObject:item.cachedAuthorPicFilepath];
     }
-    [activeNames addObject:@"state.plist"];
+    [activeNames addObject:[kCachePath stringByAppendingPathComponent:@"state.plist"]];
     
     dispatch_async(_queue, ^{
         NSFileManager* m = [NSFileManager defaultManager];
@@ -434,7 +479,12 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     
     if (!photoItem.cached)
         return;
-    
+
+    if (_indexToContinue != -1) {
+        _nextPhotoIndex = _indexToContinue;
+        _indexToContinue = -1;
+    }
+
     [self checkAwaiters];
     [self fetchNextPhoto];
 }
