@@ -8,6 +8,7 @@
 
 #import "ScreenSaver500pxView.h"
 #import "PhotoSourceManager.h"
+#import "ScreenSaverLayerView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define PHOTO_SHOW_INTERVAL 3.
@@ -18,6 +19,11 @@
     NSImage* _activeImage;
     NSTimeInterval _activeImageShownAt;
     NSImage* _nextImage;
+    PhotoItem *_nextPhotoItem;
+
+    ScreenSaverLayerView *_imageLayerView;
+    NSImageView *_authorAvatar;
+    NSTextField *_authorName, *_photoDescription;
 }
 
 #pragma mark view & layer methods
@@ -27,10 +33,64 @@
     self = [super initWithFrame:frame isPreview:isPreview];
     if (self) {
         [self setAnimationTimeInterval:1/60.0];
-
         self.wantsLayer = YES;
-        self.layerUsesCoreImageFilters = YES;
         self.layer.backgroundColor = [NSColor blackColor].CGColor;
+
+        _imageLayerView = [[ScreenSaverLayerView alloc] initWithFrame:frame];
+        [self addSubview:_imageLayerView];
+        _imageLayerView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_imageLayerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_imageLayerView)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_imageLayerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_imageLayerView)]];
+
+        _authorAvatar = [[NSImageView alloc] initWithFrame:NSZeroRect];
+        _authorAvatar.imageScaling = NSImageScaleAxesIndependently;
+        _authorAvatar.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:_authorAvatar];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_authorAvatar(<=64)]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_authorAvatar)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_authorAvatar(<=64)]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_authorAvatar)]];
+
+        NSShadow* shadow = [[NSShadow alloc] init];
+        shadow.shadowBlurRadius = 2;
+        shadow.shadowOffset = NSMakeSize(2, 2);
+        shadow.shadowColor = [NSColor blackColor];
+
+        _photoDescription = [[NSTextField alloc] initWithFrame:NSZeroRect];
+        _photoDescription.translatesAutoresizingMaskIntoConstraints = NO;
+        _photoDescription.font = [NSFont systemFontOfSize:21];
+        _photoDescription.textColor = [NSColor whiteColor];
+        _photoDescription.bordered = NO;
+        _photoDescription.alignment = NSRightTextAlignment;
+        _photoDescription.drawsBackground = NO;
+        _photoDescription.editable = NO;
+        _photoDescription.shadow = shadow;
+        [_photoDescription setContentCompressionResistancePriority:NSLayoutPriorityDefaultLow forOrientation:NSLayoutConstraintOrientationHorizontal];
+
+        [self addSubview:_photoDescription];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=0)-[_photoDescription]-10-[_authorAvatar]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_authorAvatar, _photoDescription)]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_photoDescription
+                                                         attribute:NSLayoutAttributeTop
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:_authorAvatar
+                                                         attribute:NSLayoutAttributeTop
+                                                        multiplier:1.
+                                                          constant:0]];
+
+
+        _authorName = [[NSTextField alloc] initWithFrame:NSZeroRect];
+        _authorName.translatesAutoresizingMaskIntoConstraints = NO;
+        _authorName.font = [NSFont systemFontOfSize:18];
+        _authorName.textColor = [NSColor whiteColor];
+        _authorName.bordered = NO;
+        _authorName.alignment = NSRightTextAlignment;
+        _authorName.drawsBackground = NO;
+        _authorName.editable = NO;
+        _authorName.shadow = shadow;
+        [_authorName setContentCompressionResistancePriority:NSLayoutPriorityDefaultLow forOrientation:NSLayoutConstraintOrientationHorizontal];
+
+        [self addSubview:_authorName];
+
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=0)-[_authorName]-10-[_authorAvatar]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_authorAvatar, _authorName)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_photoDescription]-5-[_authorName]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_photoDescription, _authorName)]];
 
         [self retrieveNextPhoto];
     }
@@ -40,87 +100,7 @@
 -(void)setFrame:(NSRect)frame
 {
     [super setFrame:frame];
-    [self adoptLayerGravity];
-}
-
--(id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)event
-{
-    if ([event isEqualToString:@"contents"]) {
-
-        NSRect		rect = [self bounds];
-        CIFilter	*transitionFilter = nil;
-
-        static NSArray *animationTransitions = nil;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            animationTransitions = @[kCATransitionFade, kCATransitionMoveIn, kCATransitionPush, kCATransitionReveal,
-                                     @"CIBarsSwipeTransition", @"CIModTransition", @"CIPageCurlWithShadowTransition",
-                                     @"CIRippleTransition", @"CISwipeTransition"];
-        });
-
-        NSString *transition = animationTransitions[arc4random_uniform((u_int32_t)animationTransitions.count)];
-
-        if ([transition isEqualToString:@"CIModTransition"])
-        {
-            transitionFilter = [CIFilter filterWithName:transition];
-            [transitionFilter setDefaults];
-            [transitionFilter setValue:[CIVector vectorWithX:NSMidX(rect) Y:NSMidY(rect)] forKey:@"inputCenter"];
-        }
-        else if ([transition isEqualToString:@"CIRippleTransition"])
-        {
-            transitionFilter = [CIFilter filterWithName:transition];
-            [transitionFilter setDefaults];
-            [transitionFilter setValue:[CIVector vectorWithX:NSMidX(rect) Y:NSMidY(rect)] forKey:@"inputCenter"];
-            [transitionFilter setValue:[CIVector vectorWithX:rect.origin.x Y:rect.origin.y Z:rect.size.width W:rect.size.height] forKey:@"inputExtent"];
-            [transitionFilter setValue:[CIImage imageWithColor:[CIColor colorWithRed:1. green:0 blue:0]] forKey:@"inputShadingImage"];
-        }
-
-        CATransition *newTransition = [CATransition animation];
-        if (transitionFilter)
-            [newTransition setFilter:transitionFilter];
-        else
-        {
-            [newTransition setType:transition];
-            [newTransition setSubtype:kCATransitionFromLeft];
-        }
-
-        [newTransition setDuration:1.];
-
-        return newTransition;
-    }
-    
-    return [super actionForLayer:layer forKey:event];
-}
-
--(void) adoptLayerGravity
-{
-    NSSize imageSize = _activeImage.size;
-    NSRect viewFrame = self.frame;
-
-    if (imageSize.width < viewFrame.size.width || imageSize.height < viewFrame.size.height) {
-        self.layer.contentsGravity = kCAGravityResizeAspect;
-        self.layer.frame = viewFrame;
-        return;
-    }
-
-    CGFloat targetWidth = imageSize.width / imageSize.height * viewFrame.size.height;
-    CGRect targetRect = CGRectMake(self.bounds.size.width / 2 - targetWidth / 2,
-                                   0,
-                                   targetWidth,
-                                   viewFrame.size.height);
-
-    self.layer.contentsGravity = kCAGravityResize;
-
-    if (targetRect.origin.x > 0) {
-        self.layer.contentsGravity = kCAGravityResizeAspect;
-        CGFloat targetHeight = imageSize.height / imageSize.width * viewFrame.size.width;
-        targetRect = CGRectMake(NSMinX(viewFrame),
-                                NSMidY(viewFrame) - targetHeight / 2,
-                                viewFrame.size.width,
-                                targetHeight);
-    }
-
-    self.animator.layer.frame = targetRect;
+    [_imageLayerView adoptLayerGravity:_activeImage.size];
 }
 
 #pragma mark internal methods
@@ -142,26 +122,43 @@
                 if (!image) {
                     [self retrieveNextPhoto];
                 }
-                
+
                 if (!_activeImage) {
-                    [self updateActiveImage:image];
+                    _nextPhotoItem = photo;
+                    [self updateActiveImage:image photoItem:photo];
                     [self retrieveNextPhoto];
-                } else
+                }
+                else
+                {
                     _nextImage = image;
+                    _nextPhotoItem = photo;
+                }
             });
         });
     }];
 }
 
-- (void)updateActiveImage:(NSImage*)image
+- (void)updateActiveImage:(NSImage*)image photoItem:(PhotoItem*)item
 {
     _activeImage = image;
     _activeImageShownAt = [NSDate timeIntervalSinceReferenceDate];
-
+    _authorAvatar.alphaValue = 0;
+    _authorName.alphaValue = 0;
+    _photoDescription.alphaValue = 0;
     [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
-        [self adoptLayerGravity];
-        self.animator.layer.contents = [_activeImage layerContentsForContentsScale:[_activeImage recommendedLayerContentsScale:0]];
-    } completionHandler:nil];
+        [_imageLayerView adoptLayerGravity:_activeImage.size];
+        _imageLayerView.animator.layer.contents = [_activeImage layerContentsForContentsScale:[_activeImage recommendedLayerContentsScale:0]];
+    } completionHandler:^{
+        _authorAvatar.image = _activeImage;
+        _authorName.stringValue = item.author;
+        _photoDescription.stringValue = item.title;
+
+        [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+            _authorAvatar.animator.alphaValue = 1;
+            _authorName.animator.alphaValue = 1;
+            _photoDescription.animator.alphaValue = 1;
+        } completionHandler:nil];
+    }];
 }
 
 - (void)checkToNextImage
@@ -175,9 +172,10 @@
     if (shownInterval < PHOTO_SHOW_INTERVAL)
         return;
     
-    [self updateActiveImage:_nextImage];
+    [self updateActiveImage:_nextImage photoItem:_nextPhotoItem];
     _nextImage = nil;
-    
+    _nextPhotoItem = nil;
+
     [self retrieveNextPhoto];
 }
 

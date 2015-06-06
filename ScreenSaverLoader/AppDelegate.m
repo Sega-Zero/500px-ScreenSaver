@@ -22,9 +22,10 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     _screenSaver = [ScreenSaver500pxView new];
-    _screenSaver.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    _screenSaver.frame = [_window.contentView bounds];
+    _screenSaver.translatesAutoresizingMaskIntoConstraints = NO;
     [_window.contentView addSubview:_screenSaver];
+    [_window.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_screenSaver]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_screenSaver)]];
+    [_window.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_screenSaver]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_screenSaver)]];
     
     [_screenSaver startAnimation];
     [NSTimer scheduledTimerWithTimeInterval:[_screenSaver animationTimeInterval] target:_screenSaver selector:@selector(animateOneFrame) userInfo:nil repeats:YES];
