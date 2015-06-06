@@ -187,44 +187,6 @@
 
 #pragma mark - photos meta processing
 
-NSString* userName(NSDictionary* item)
-{
-    NSDictionary* user = item[@"user"];
-    if (![user isKindOfClass:NSDictionary.class])
-        return nil;
-    
-    return user[@"fullname"];
-}
-
-NSString* userPic(NSDictionary* item)
-{
-    NSDictionary* user = item[@"user"];
-    if (![user isKindOfClass:NSDictionary.class])
-        return nil;
-    
-    return user[@"userpic_url"];
-}
-
-NSString* bestPhotoUrl(NSDictionary* item)
-{
-    NSArray* images = item[@"images"];
-    if (![images isKindOfClass:NSArray.class])
-        return nil;
-    
-    for (NSDictionary* image in images) {
-        if (![image isKindOfClass:NSDictionary.class])
-            continue;
-        
-        NSString* url = image[@"url"];
-        if (![url isKindOfClass:NSString.class])
-            continue;
-        
-        return url;
-    }
-    
-    return nil;
-}
-
 PhotoItem* photoById(NSArray* items, UInt64 n)
 {
     for (PhotoItem* item in items)
@@ -248,28 +210,22 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     
     LOG(@"[500px] parse feed:");
     for (NSDictionary* item in items) {
-        UInt64 photoId = [item[@"id"] asUInt64];
-        if (photoById(_photosFeed, photoId))
-            continue;
-        
-        NSString* title = toSafeString(item[@"name"]);
-        NSString* text = toSafeString(item[@"description"]);
-        NSString* author = toSafeString(userName(item));
-        NSString* authorPic = toSafeString(userPic(item));
-        NSString* photoUrl = toSafeString(bestPhotoUrl(item));
-
         /* filter out vertical photos */
         NSInteger width = [item[@"width"] asInteger];
         NSInteger height = [item[@"height"] asInteger];
         if (width < height)
             continue;
         //*/
-
-        NSString* rating = toSafeString(item[@"rating"]);
         
-        PhotoItem* photoItem = [PhotoItem photoItemWithHashId:photoId title:title description:text author:author authorPic:authorPic rating:rating photoUrl:photoUrl];
+        PhotoItem* photoItem = [PhotoItem photoItemFor500px:item];
+        if (photoItem == nil)
+            continue;
+        
+        if (photoById(_photosFeed, photoItem.photoHashId))
+            continue;
+
         [parsedFeed addObject:photoItem];
-        LOG(@"[500px] feed item: %llu. %@", photoId, title);
+        LOG(@"[500px] feed item: %llu. %@", photoItem.photoHashId, photoItem.title);
     }
     
     if (parsedFeed.count < FEED_COUNT) {

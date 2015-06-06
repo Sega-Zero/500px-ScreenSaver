@@ -8,33 +8,9 @@
 
 #import "PhotoSource.h"
 #import "Common.h"
+#import "NSObject+Conversion.h"
 
 @implementation PhotoItem
-
-+ (PhotoItem*)photoItemWithId:(NSString*)photoId title:(NSString*)title description:(NSString*)description author:(NSString*)author authorPic:(NSString*)authorPic rating:(NSString*)rating photoUrl:(NSString *)photoUrl
-{
-    PhotoItem* item = [PhotoItem new];
-    item->_photoId = photoId;
-    item->_title = title;
-    item->_descriptionText = description;
-    item->_author = author;
-    item->_authorPicUrl = authorPic;
-    item->_photoUrl = photoUrl;
-    return item;
-}
-
-+ (PhotoItem*)photoItemWithHashId:(UInt64)photoHashId title:(NSString*)title description:(NSString*)description author:(NSString*)author authorPic:(NSString*)authorPic rating:(NSString*)rating photoUrl:(NSString*)photoUrl
-{
-    PhotoItem* item = [PhotoItem new];
-    item->_photoHashId = photoHashId;
-    item->_photoId = [NSString stringWithFormat:@"%llu", item->_photoHashId];
-    item->_title = title;
-    item->_descriptionText = description;
-    item->_author = author;
-    item->_authorPicUrl = authorPic;
-    item->_photoUrl = photoUrl;
-    return item;
-}
 
 - (NSString *)debugDescriptionCompact
 {
@@ -50,10 +26,11 @@
     _title = [aDecoder decodeObjectForKey:@"t"];
     _descriptionText = [aDecoder decodeObjectForKey:@"d"];
     _author = [aDecoder decodeObjectForKey:@"a"];
+    _authorId = [aDecoder decodeObjectForKey:@"ai"];
     _authorPicUrl = [aDecoder decodeObjectForKey:@"p"];
     _rating = [aDecoder decodeObjectForKey:@"r"];
     _photoId = [aDecoder decodeObjectForKey:@"i"];
-    _photoHashId = [[aDecoder decodeObjectForKey:@"h"] unsignedLongLongValue];
+    _photoHashId = [[aDecoder decodeObjectForKey:@"h"] asUInt64];
     _photoUrl = [aDecoder decodeObjectForKey:@"u"];
     
     return self;
@@ -64,6 +41,7 @@
     [aCoder encodeObject:_title forKey:@"t"];
     [aCoder encodeObject:_descriptionText forKey:@"d"];
     [aCoder encodeObject:_author forKey:@"a"];
+    [aCoder encodeObject:_authorId forKey:@"ai"];
     [aCoder encodeObject:_authorPicUrl forKey:@"p"];
     [aCoder encodeObject:_rating forKey:@"r"];
     [aCoder encodeObject:_photoId forKey:@"i"];
@@ -82,7 +60,7 @@
 
 - (NSString *)cachedAuthorPicFilepath
 {
-    return [[kCachePath stringByAppendingPathComponent:_photoId] stringByAppendingString:@".author"];
+    return [[kCachePath stringByAppendingPathComponent:_authorId] stringByAppendingString:@".author"];
 }
 
 - (BOOL)cached
@@ -91,6 +69,50 @@
     BOOL completed = [m fileExistsAtPath:self.cachedFilepath isDirectory:NULL] &&
                      [m fileExistsAtPath:self.cachedAuthorPicFilepath isDirectory:NULL];
     return completed;
+}
+
+@end
+
+@implementation PhotoItem (px500)
+
+NSString* bestPhotoUrl(NSDictionary* item)
+{
+    NSArray* images = item[@"images"];
+    if (![images isKindOfClass:NSArray.class])
+        return nil;
+    
+    for (NSDictionary* image in images) {
+        if (![image isKindOfClass:NSDictionary.class])
+            continue;
+        
+        NSString* url = image[@"url"];
+        if (![url isKindOfClass:NSString.class])
+            continue;
+        
+        return url;
+    }
+    
+    return nil;
+}
+
++ (PhotoItem*)photoItemFor500px:(NSDictionary*)photoObject
+{
+    PhotoItem* item = [PhotoItem new];
+    item->_photoHashId = [photoObject[@"id"] asUInt64];
+    item->_photoId = [NSString stringWithFormat:@"%llu", item->_photoHashId];
+    item->_title = toSafeString(photoObject[@"name"]);;
+    item->_descriptionText = toSafeString(photoObject[@"description"]);
+    
+    NSDictionary* user = photoObject[@"user"];
+    if (user) {
+        item->_author = toSafeString(user[@"fullname"]);
+        item->_authorId = toSafeString(user[@"id"]);
+        item->_authorPicUrl = toSafeString(user[@"userpic_url"]);
+    }
+    item->_photoUrl = toSafeString(bestPhotoUrl(photoObject));
+    item->_rating = toSafeString(photoObject[@"rating"]);
+    
+    return item;
 }
 
 @end

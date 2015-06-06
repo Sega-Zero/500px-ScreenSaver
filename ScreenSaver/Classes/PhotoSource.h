@@ -12,15 +12,13 @@
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) NSString *descriptionText;
 @property (nonatomic, readonly) NSString *author;
+@property (nonatomic, readonly) NSString *authorId;
 @property (nonatomic, readonly) NSString *authorPicUrl;
 @property (nonatomic, readonly) NSString *rating;
 @property (nonatomic, readonly) NSString *photoId;
 @property (nonatomic, readonly) UInt64    photoHashId;
 
 @property (nonatomic, readonly) NSString *photoUrl;
-
-+ (PhotoItem*)photoItemWithId:(NSString*)photoId title:(NSString*)title description:(NSString*)description author:(NSString*)author authorPic:(NSString*)authorPic rating:(NSString*)rating photoUrl:(NSString*)photoUrl;
-+ (PhotoItem*)photoItemWithHashId:(UInt64)photoHashId title:(NSString*)title description:(NSString*)description author:(NSString*)author authorPic:(NSString*)authorPic rating:(NSString*)rating photoUrl:(NSString*)photoUrl;
 @end
 
 typedef void (^PhotoSourceCompletion)(PhotoItem* photo, NSError* error);
@@ -29,6 +27,10 @@ typedef void (^PhotoSourceCompletion)(PhotoItem* photo, NSError* error);
 @property (nonatomic, readonly) NSString *cachedFilepath;
 @property (nonatomic, readonly) NSString *cachedAuthorPicFilepath;
 @property (nonatomic, readonly) BOOL cached;
+@end
+
+@interface PhotoItem (px500)
++ (PhotoItem*)photoItemFor500px:(NSDictionary*)jsonObject;
 @end
 
 @protocol PhotoSource <NSObject>
