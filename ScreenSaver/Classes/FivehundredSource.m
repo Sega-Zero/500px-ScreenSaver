@@ -98,6 +98,7 @@
         }
     }
 
+    [self fetchNextPhoto];
     _nextPhotoHandler = completionHandler;
 }
 
