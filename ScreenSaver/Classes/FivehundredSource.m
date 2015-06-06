@@ -48,7 +48,7 @@
     if (!completionHandler)
         return;
     
-    if (!dispatch_queue_get_specific(_queue, _queueTag)) {
+    if (!dispatch_get_specific(_queueTag)) {
         dispatch_async(_queue, ^{ [self retrieveNextPhotoWithCompletion:completionHandler]; });
         return;
     }
@@ -109,7 +109,7 @@
 
 - (void)saveFeed
 {
-    if (!dispatch_queue_get_specific(_queue, _queueTag)) {
+    if (!dispatch_get_specific(_queueTag)) {
         dispatch_async(_queue, ^{ [self saveFeed]; });
         return;
     }
@@ -157,7 +157,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
 
 - (void)parseFeed:(NSDictionary*)feed
 {
-    if (!dispatch_queue_get_specific(_queue, _queueTag)) {
+    if (!dispatch_get_specific(_queueTag)) {
         dispatch_async(_queue, ^{ [self parseFeed:feed]; });
         return;
     }
@@ -246,7 +246,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
 
 - (void)fetchNextPhoto
 {
-    if (!dispatch_queue_get_specific(_queue, _queueTag)) {
+    if (!dispatch_get_specific(_queueTag)) {
         dispatch_async(_queue, ^{ [self fetchNextPhoto]; });
         return;
     }
@@ -303,7 +303,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
 
 - (void)didFetchedPhoto:(PhotoItem*)photoItem
 {
-    if (!dispatch_queue_get_specific(_queue, _queueTag)) {
+    if (!dispatch_get_specific(_queueTag)) {
         dispatch_async(_queue, ^{ [self didFetchedPhoto:photoItem]; });
         return;
     }
