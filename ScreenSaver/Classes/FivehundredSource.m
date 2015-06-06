@@ -11,13 +11,15 @@
 #import "Collections+Debug.h"
 #import "Common.h"
 
-#define PAGE_COUNT 100
+#define PAGE_COUNT 20
+#define FEED_COUNT 300
 
 @implementation FivehundredSource
 {
     BOOL _fetchingFeed;
     BOOL _fetchedFeed;
     NSInteger _currentPage;
+    NSInteger _totalPages;
     
     NSMutableArray *_randomizedPhotos;
     NSMutableArray *_readyPhotos;
@@ -85,6 +87,7 @@
 {
     _fetchingFeed = NO;
     _currentPage = 1;
+    _totalPages = 500;
     
     NSArray* saved = [NSKeyedUnarchiver unarchiveObjectWithFile:[kCachePath stringByAppendingPathComponent:@"savedFeed.plist"]];
     if (![saved isKindOfClass:NSArray.class])
@@ -166,6 +169,8 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
         _randomizedPhotos = [NSMutableArray new];
     }
     
+    _totalPages = [feed[@"total_pages"] integerValue];
+    
     NSArray* items = feed[@"photos"];
     
     NSLog(@"[500px] parse feed:");
@@ -196,7 +201,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     
     NSInteger feedLength = _parsedPhotos.count + _loadingPhotos.count + _readyPhotos.count;
     
-    if (feedLength < 500) {
+    if (feedLength < FEED_COUNT) {
         _currentPage++;
         NSLog(@"[500px] feed length - %d, too small, get the next page", (int)feedLength);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -212,6 +217,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     if (_fetchingFeed)
         return;
     _fetchingFeed = YES;
+    _currentPage = arc4random() % _totalPages;
     
     NSURL *baseUrl = [NSURL URLWithString:@"https://api.500px.com"];
     NSString *methodPhotos = @"/v1/photos";
