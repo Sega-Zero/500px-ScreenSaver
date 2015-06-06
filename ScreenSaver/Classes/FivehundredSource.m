@@ -10,6 +10,7 @@
 #import "AFNetworking.h"
 #import "Collections+Debug.h"
 #import "Common.h"
+#import "NSObject+Conversion.h"
 
 #define PAGE_COUNT 20
 #define FEED_COUNT 300
@@ -126,6 +127,15 @@ NSString* userName(NSDictionary* item)
     return user[@"fullname"];
 }
 
+NSString* userPic(NSDictionary* item)
+{
+    NSDictionary* user = item[@"user"];
+    if (![user isKindOfClass:NSDictionary.class])
+        return nil;
+    
+    return user[@"userpic_url"];
+}
+
 NSString* bestPhotoUrl(NSDictionary* item)
 {
     NSArray* images = item[@"images"];
@@ -175,26 +185,26 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     
     NSLog(@"[500px] parse feed:");
     for (NSDictionary* item in items) {
-        UInt64 photoId = [item[@"id"] longLongValue];
+        UInt64 photoId = [item[@"id"] asUInt64];
         if (photoById(_parsedPhotos, photoId) || photoById(_readyPhotos, photoId) || photoById(_loadingPhotos, photoId))
             continue;
         
-        NSString* title = item[@"name"] ?: @"";
-        NSString* text = item[@"description"] ?: @"";
-        NSString* author = userName(item) ?: @"";
-        NSString* photoUrl = bestPhotoUrl(item) ?: @"";
+        NSString* title = toSafeString(item[@"name"]);
+        NSString* text = toSafeString(item[@"description"]);
+        NSString* author = toSafeString(userName(item));
+        NSString* authorPic = toSafeString(userPic(item));
+        NSString* photoUrl = toSafeString(bestPhotoUrl(item));
 
         /* filter out vertical photos
-        NSInteger width = [item[@"width"] integerValue];
-        NSInteger height = [item[@"height"] integerValue];
+        NSInteger width = [item[@"width"] asInteger];
+        NSInteger height = [item[@"height"] asInteger];
         if (width < height)
             continue;
         */
 
-        id ratingValue = item[@"rating"];
-        NSString* rating = ratingValue ? [NSString stringWithFormat:@"%@", ratingValue] : @"";
+        NSString* rating = toSafeString(item[@"rating"]);
         
-        PhotoItem* photoItem = [PhotoItem photoItemWithHashId:photoId title:title description:text author:author rating:rating photoUrl:photoUrl];
+        PhotoItem* photoItem = [PhotoItem photoItemWithHashId:photoId title:title description:text author:author authorPic:authorPic rating:rating photoUrl:photoUrl];
         [_parsedPhotos addObject:photoItem];
         NSLog(@"[500px] feed item: %llu. %@", photoId, title);
     }
@@ -260,6 +270,8 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     [_parsedPhotos removeObjectAtIndex:0];
     [_loadingPhotos addObject:nextPhoto];
     
+    [self fetchAuthorPic:nextPhoto];
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:nextPhoto.cachedFilepath]) {
         dispatch_async(_queue, ^{ [self didFetchedPhoto:nextPhoto]; });
         return;
@@ -301,13 +313,67 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     [downloadTask resume];
 }
 
+- (void)fetchAuthorPic:(PhotoItem*)photoItem
+{
+    if (!dispatch_get_specific(_queueTag)) {
+        dispatch_async(_queue, ^{ [self fetchNextPhoto]; });
+        return;
+    }
+    
+    NSLog(@"[500px] fetch authorpic: %llu. - %@, to %@", photoItem.photoHashId, photoItem.authorPicUrl, photoItem.cachedAuthorPicFilepath);
+
+    NSURL* url = [NSURL URLWithString:photoItem.authorPicUrl];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    __weak id w_self = self;
+    
+    AFURLSessionManager* manager = [[AFURLSessionManager alloc] init];
+    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil
+                                destination:^NSURL *(NSURL *targetPath, NSURLResponse *response)
+                                {
+                                    NSFileManager* m = [NSFileManager defaultManager];
+                                    
+                                    NSString* cachedFilepath = photoItem.cachedAuthorPicFilepath;
+                                    NSString* folder = [cachedFilepath stringByDeletingLastPathComponent];
+                                    if (![m fileExistsAtPath:folder])
+                                        [m createDirectoryAtPath:folder withIntermediateDirectories:YES attributes:nil error:nil];
+                                    
+                                    if ([m fileExistsAtPath:cachedFilepath])
+                                        [m removeItemAtPath:cachedFilepath error:nil];
+                                    
+                                    return [NSURL fileURLWithPath:cachedFilepath];
+                                }
+                                completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error)
+                                {
+                                    FivehundredSource* s_self = w_self;
+                                    if (!s_self)
+                                        return;
+                                    
+                                    NSLog(@"[500px] fetch authorpic: %llu. %@", photoItem.photoHashId, error ? @"failed" : @"completed");
+                                    
+                                    NSString* cachedFilepath = photoItem.cachedAuthorPicFilepath;
+                                    NSFileManager* m = [NSFileManager defaultManager];
+                                    if (![m fileExistsAtPath:cachedFilepath])
+                                        [m createFileAtPath:cachedFilepath contents:[NSData data] attributes:nil];
+
+                                    [s_self didFetchedPhoto:photoItem];
+                                }];
+    [downloadTask resume];
+}
+
 - (void)didFetchedPhoto:(PhotoItem*)photoItem
 {
     if (!dispatch_get_specific(_queueTag)) {
         dispatch_async(_queue, ^{ [self didFetchedPhoto:photoItem]; });
         return;
     }
-
+    
+    NSFileManager* m = [NSFileManager defaultManager];
+    BOOL completed = [m fileExistsAtPath:photoItem.cachedFilepath isDirectory:NULL] &&
+                     [m fileExistsAtPath:photoItem.cachedAuthorPicFilepath isDirectory:NULL];
+    if (!completed)
+        return;
+    
     [_loadingPhotos removeObject:photoItem];
     [_readyPhotos addObject:photoItem];
     [self saveFeed];

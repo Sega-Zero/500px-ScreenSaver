@@ -29,6 +29,9 @@
 		7C9C8BF41B226062003D360C /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BF21B226062003D360C /* Common.h */; };
 		7C9C8BF51B226062003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
 		7C9C8BF61B22611F003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
+		7C9C8BF91B232563003D360C /* NSObject+Conversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BF71B232563003D360C /* NSObject+Conversion.h */; };
+		7C9C8BFA1B232563003D360C /* NSObject+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF81B232563003D360C /* NSObject+Conversion.m */; };
+		7C9C8BFB1B2327ED003D360C /* NSObject+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF81B232563003D360C /* NSObject+Conversion.m */; };
 		CE8CD3E61B2267C40015A8C9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */; };
 		CE8CD3E91B22EEB20015A8C9 /* ScreenSaverLayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CD3E71B22EEB20015A8C9 /* ScreenSaverLayerView.h */; };
 		CE8CD3EA1B22EEB20015A8C9 /* ScreenSaverLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */; };
@@ -55,6 +58,8 @@
 		7C9C8BEC1B22462D003D360C /* Collections+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Collections+Debug.m"; path = "Classes/Collections+Debug.m"; sourceTree = "<group>"; };
 		7C9C8BF21B226062003D360C /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		7C9C8BF31B226062003D360C /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
+		7C9C8BF71B232563003D360C /* NSObject+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Conversion.h"; path = "Classes/NSObject+Conversion.h"; sourceTree = "<group>"; };
+		7C9C8BF81B232563003D360C /* NSObject+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Conversion.m"; path = "Classes/NSObject+Conversion.m"; sourceTree = "<group>"; };
 		BB200605C8ED7CF3310B464F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		BD232B21C7FBACBF029F0689 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -181,6 +186,8 @@
 				CED7C3D51B21D2A20098027B /* Supporting Files */,
 				7C9C8BEB1B22462D003D360C /* Collections+Debug.h */,
 				7C9C8BEC1B22462D003D360C /* Collections+Debug.m */,
+				7C9C8BF71B232563003D360C /* NSObject+Conversion.h */,
+				7C9C8BF81B232563003D360C /* NSObject+Conversion.m */,
 			);
 			path = ScreenSaver;
 			sourceTree = "<group>";
@@ -204,6 +211,7 @@
 				CE8CD3E91B22EEB20015A8C9 /* ScreenSaverLayerView.h in Headers */,
 				7C9C8BDD1B2211D6003D360C /* PhotoSourceManager.h in Headers */,
 				7C9C8BA91B220037003D360C /* FivehundredSource.h in Headers */,
+				7C9C8BF91B232563003D360C /* NSObject+Conversion.h in Headers */,
 				7C9C8BA51B21FEE9003D360C /* PhotoSource.h in Headers */,
 				CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */,
 				7C9C8BF41B226062003D360C /* Common.h in Headers */,
@@ -343,6 +351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C9C8BFB1B2327ED003D360C /* NSObject+Conversion.m in Sources */,
 				CE8CD3EB1B22F05E0015A8C9 /* ScreenSaverLayerView.m in Sources */,
 				7C9C8BF61B22611F003D360C /* Common.m in Sources */,
 				7C9C8BEF1B224794003D360C /* Collections+Debug.m in Sources */,
@@ -360,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C9C8BF51B226062003D360C /* Common.m in Sources */,
+				7C9C8BFA1B232563003D360C /* NSObject+Conversion.m in Sources */,
 				7C9C8BEE1B22462D003D360C /* Collections+Debug.m in Sources */,
 				CE8CD3EA1B22EEB20015A8C9 /* ScreenSaverLayerView.m in Sources */,
 				CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */,

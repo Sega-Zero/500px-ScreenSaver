@@ -19,6 +19,7 @@
     NSImage* _activeImage;
     NSTimeInterval _activeImageShownAt;
     NSImage* _nextImage;
+    NSImage* _nextAuthorImage;
     PhotoItem *_nextPhotoItem;
 
     ScreenSaverLayerView *_imageLayerView;
@@ -46,8 +47,8 @@
         _authorAvatar.imageScaling = NSImageScaleAxesIndependently;
         _authorAvatar.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:_authorAvatar];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_authorAvatar(<=64)]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_authorAvatar)]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_authorAvatar(<=64)]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_authorAvatar)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_authorAvatar(50)]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_authorAvatar)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_authorAvatar(50)]-10-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_authorAvatar)]];
 
         NSShadow* shadow = [[NSShadow alloc] init];
         shadow.shadowBlurRadius = 2;
@@ -78,7 +79,7 @@
 
         _authorName = [[NSTextField alloc] initWithFrame:NSZeroRect];
         _authorName.translatesAutoresizingMaskIntoConstraints = NO;
-        _authorName.font = [NSFont systemFontOfSize:18];
+        _authorName.font = [NSFont systemFontOfSize:14];
         _authorName.textColor = [NSColor whiteColor];
         _authorName.bordered = NO;
         _authorName.alignment = NSRightTextAlignment;
@@ -117,6 +118,7 @@
         
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
             NSImage* image = [[NSImage alloc] initWithContentsOfFile:photo.cachedFilepath];
+            NSImage* authorImage = [[NSImage alloc] initWithContentsOfFile:photo.cachedAuthorPicFilepath];
             dispatch_async(dispatch_get_main_queue(), ^{
                 _fetchingImage = NO;
                 if (!image) {
@@ -125,12 +127,13 @@
 
                 if (!_activeImage) {
                     _nextPhotoItem = photo;
-                    [self updateActiveImage:image photoItem:photo];
+                    [self updateActiveImage:image authorImage:authorImage photoItem:photo];
                     [self retrieveNextPhoto];
                 }
                 else
                 {
                     _nextImage = image;
+                    _nextAuthorImage = authorImage;
                     _nextPhotoItem = photo;
                 }
             });
@@ -138,7 +141,7 @@
     }];
 }
 
-- (void)updateActiveImage:(NSImage*)image photoItem:(PhotoItem*)item
+- (void)updateActiveImage:(NSImage*)image authorImage:(NSImage*)authorImage photoItem:(PhotoItem*)item
 {
     _activeImage = image;
     _activeImageShownAt = [NSDate timeIntervalSinceReferenceDate];
@@ -149,7 +152,7 @@
         [_imageLayerView adoptLayerGravity:_activeImage.size];
         _imageLayerView.animator.layer.contents = [_activeImage layerContentsForContentsScale:[_activeImage recommendedLayerContentsScale:0]];
     } completionHandler:^{
-        _authorAvatar.image = _activeImage;
+        _authorAvatar.image = authorImage;
         _authorName.stringValue = item.author;
         _photoDescription.stringValue = item.title;
 
@@ -172,8 +175,9 @@
     if (shownInterval < PHOTO_SHOW_INTERVAL)
         return;
     
-    [self updateActiveImage:_nextImage photoItem:_nextPhotoItem];
+    [self updateActiveImage:_nextImage authorImage:_nextAuthorImage photoItem:_nextPhotoItem];
     _nextImage = nil;
+    _nextAuthorImage = nil;
     _nextPhotoItem = nil;
 
     [self retrieveNextPhoto];

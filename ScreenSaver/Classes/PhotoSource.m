@@ -11,18 +11,19 @@
 
 @implementation PhotoItem
 
-+ (PhotoItem*)photoItemWithId:(NSString*)photoId title:(NSString*)title description:(NSString*)description author:(NSString*)author rating:(NSString*)rating photoUrl:(NSString *)photoUrl
++ (PhotoItem*)photoItemWithId:(NSString*)photoId title:(NSString*)title description:(NSString*)description author:(NSString*)author authorPic:(NSString*)authorPic rating:(NSString*)rating photoUrl:(NSString *)photoUrl
 {
     PhotoItem* item = [PhotoItem new];
     item->_photoId = photoId;
     item->_title = title;
     item->_descriptionText = description;
     item->_author = author;
+    item->_authorPicUrl = authorPic;
     item->_photoUrl = photoUrl;
     return item;
 }
 
-+ (PhotoItem*)photoItemWithHashId:(UInt64)photoHashId title:(NSString*)title description:(NSString*)description author:(NSString*)author rating:(NSString*)rating photoUrl:(NSString*)photoUrl
++ (PhotoItem*)photoItemWithHashId:(UInt64)photoHashId title:(NSString*)title description:(NSString*)description author:(NSString*)author authorPic:(NSString*)authorPic rating:(NSString*)rating photoUrl:(NSString*)photoUrl
 {
     PhotoItem* item = [PhotoItem new];
     item->_photoHashId = photoHashId;
@@ -30,6 +31,7 @@
     item->_title = title;
     item->_descriptionText = description;
     item->_author = author;
+    item->_authorPicUrl = authorPic;
     item->_photoUrl = photoUrl;
     return item;
 }
@@ -48,6 +50,7 @@
     _title = [aDecoder decodeObjectForKey:@"t"];
     _descriptionText = [aDecoder decodeObjectForKey:@"d"];
     _author = [aDecoder decodeObjectForKey:@"a"];
+    _authorPicUrl = [aDecoder decodeObjectForKey:@"p"];
     _rating = [aDecoder decodeObjectForKey:@"r"];
     _photoId = [aDecoder decodeObjectForKey:@"i"];
     _photoHashId = [[aDecoder decodeObjectForKey:@"h"] unsignedLongLongValue];
@@ -61,6 +64,7 @@
     [aCoder encodeObject:_title forKey:@"t"];
     [aCoder encodeObject:_descriptionText forKey:@"d"];
     [aCoder encodeObject:_author forKey:@"a"];
+    [aCoder encodeObject:_authorPicUrl forKey:@"p"];
     [aCoder encodeObject:_rating forKey:@"r"];
     [aCoder encodeObject:_photoId forKey:@"i"];
     [aCoder encodeObject:@(_photoHashId) forKey:@"h"];
@@ -74,6 +78,11 @@
 - (NSString *)cachedFilepath
 {
     return [kCachePath stringByAppendingPathComponent:_photoId];
+}
+
+- (NSString *)cachedAuthorPicFilepath
+{
+    return [[kCachePath stringByAppendingPathComponent:_photoId] stringByAppendingString:@".author"];
 }
 
 @end
