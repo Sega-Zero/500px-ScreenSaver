@@ -29,6 +29,7 @@
 		7C9C8BF41B226062003D360C /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C9C8BF21B226062003D360C /* Common.h */; };
 		7C9C8BF51B226062003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
 		7C9C8BF61B22611F003D360C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C8BF31B226062003D360C /* Common.m */; };
+		CE8CD3E61B2267C40015A8C9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */; };
 		CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */ = {isa = PBXBuildFile; fileRef = CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */; };
 		CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
 /* End PBXBuildFile section */
@@ -53,6 +54,7 @@
 		7C9C8BF31B226062003D360C /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
 		BB200605C8ED7CF3310B464F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		BD232B21C7FBACBF029F0689 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CED7C3D21B21D2A20098027B /* 500px ScreenSaver.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "500px ScreenSaver.saver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED7C3D61B21D2A20098027B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenSaver500pxView.h; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8CD3E61B2267C40015A8C9 /* QuartzCore.framework in Frameworks */,
 				00A34B9296A663D19FB04E87 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,6 +138,7 @@
 		AD27FF8C493A653326C0B773 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE8CD3E51B2267C40015A8C9 /* QuartzCore.framework */,
 				FDAFC8878B3B71B4B6E7BEFA /* libPods.a */,
 			);
 			name = Frameworks;
