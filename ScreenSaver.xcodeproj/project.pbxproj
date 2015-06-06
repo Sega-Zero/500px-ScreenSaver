@@ -36,6 +36,7 @@
 		CE8CD3E91B22EEB20015A8C9 /* ScreenSaverLayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8CD3E71B22EEB20015A8C9 /* ScreenSaverLayerView.h */; };
 		CE8CD3EA1B22EEB20015A8C9 /* ScreenSaverLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */; };
 		CE8CD3EB1B22F05E0015A8C9 /* ScreenSaverLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8CD3E81B22EEB20015A8C9 /* ScreenSaverLayerView.m */; };
+		CE8CD3F01B23572E0015A8C9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C9C8BB81B22063C003D360C /* Images.xcassets */; };
 		CED7C3D81B21D2A20098027B /* ScreenSaver500pxView.h in Headers */ = {isa = PBXBuildFile; fileRef = CED7C3D71B21D2A20098027B /* ScreenSaver500pxView.h */; };
 		CED7C3DA1B21D2A20098027B /* ScreenSaver500pxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CED7C3D91B21D2A20098027B /* ScreenSaver500pxView.m */; };
 /* End PBXBuildFile section */
@@ -49,7 +50,7 @@
 		7C9C8BB31B22063C003D360C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7C9C8BB41B22063C003D360C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7C9C8BB61B22063C003D360C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		7C9C8BB81B22063C003D360C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		7C9C8BB81B22063C003D360C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ScreenSaverLoader/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		7C9C8BBB1B22063C003D360C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		7C9C8BDB1B2211D6003D360C /* PhotoSourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoSourceManager.h; path = Classes/PhotoSourceManager.h; sourceTree = "<group>"; };
 		7C9C8BDC1B2211D6003D360C /* PhotoSourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoSourceManager.m; path = Classes/PhotoSourceManager.m; sourceTree = "<group>"; };
@@ -129,7 +130,6 @@
 			children = (
 				7C9C8BB31B22063C003D360C /* AppDelegate.h */,
 				7C9C8BB41B22063C003D360C /* AppDelegate.m */,
-				7C9C8BB81B22063C003D360C /* Images.xcassets */,
 				7C9C8BBA1B22063C003D360C /* MainMenu.xib */,
 				7C9C8BB11B22063C003D360C /* Supporting Files */,
 			);
@@ -195,6 +195,7 @@
 		CED7C3D51B21D2A20098027B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7C9C8BB81B22063C003D360C /* Images.xcassets */,
 				CED7C3D61B21D2A20098027B /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -308,6 +309,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8CD3F01B23572E0015A8C9 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,7 +399,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB200605C8ED7CF3310B464F /* Pods.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -414,7 +415,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD232B21C7FBACBF029F0689 /* Pods.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ScreenSaverLoader/Info.plist;
