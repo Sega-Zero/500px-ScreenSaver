@@ -1,6 +1,9 @@
 /* title for Abstract category in preferences */
 "Abstract" = "Абстрактные";
 
+/* title for 'all categories' item in preferences */
+"All Categories" = "Все категории";
+
 /* title for Animals category in preferences */
 "Animals" = "Животные";
 

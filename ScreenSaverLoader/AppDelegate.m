@@ -29,6 +29,17 @@
     
     [_screenSaver startAnimation];
     [NSTimer scheduledTimerWithTimeInterval:[_screenSaver animationTimeInterval] target:_screenSaver selector:@selector(animateOneFrame) userInfo:nil repeats:YES];
+    
+    __block BOOL inOptions = NO;
+    [NSEvent addLocalMonitorForEventsMatchingMask:NSLeftMouseDownMask handler:^NSEvent *(NSEvent *ev) {
+        if (inOptions)
+            return ev;
+        inOptions = YES;
+        [_window beginSheet:[_screenSaver configureSheet] completionHandler:^(NSModalResponse returnCode) {
+            inOptions = NO;
+        }];
+        return ev;
+    }];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

@@ -124,6 +124,16 @@
     return self;
 }
 
+- (void)cleanState
+{
+    _fetchingImage = NO;
+    _activeImage = nil;
+    _activeImageShownAt = 0;
+    _nextImage = nil;
+    _nextAuthorImage = nil;
+    _nextPhotoItem = nil;
+}
+
 -(void)setFrame:(NSRect)frame
 {
     [super setFrame:frame];
@@ -223,7 +233,17 @@
 
 - (void)animateLoading
 {
-    if (!_activeImage)
+    if (!_activeImage) {
+        _authorAvatar.image = nil;
+        _authorName.stringValue = @"";
+        _photoDescription.stringValue = @"";
+
+        _authorAvatar.animator.alphaValue = 1;
+        _authorName.animator.alphaValue = 1;
+        _photoDescription.animator.alphaValue = 1;
+
+        _imageLayerView.layer.contents = nil;
+
         [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
             context.duration = 1.2;
             _loadingImageView.animator.alphaValue = _loadingImageView.alphaValue > 0.2 ? 0.2 : 1;
@@ -232,6 +252,7 @@
                 [self animateLoading];
             });
         }];
+    }
 }
 
 #pragma mark screensaver override methods
@@ -318,6 +339,7 @@
     }];
 
     NSInteger selectedIndex = prefsIntValue(kPrefsCategory);
+    [_browseCategory removeAllItems];
     [menuItems enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         [_browseCategory addItemWithTitle:obj[@"localized"]];
         NSMenuItem *item = [_browseCategory lastItem];
@@ -325,6 +347,15 @@
         if (item.tag == selectedIndex)
             [_browseCategory selectItem:item];
     }];
+    
+    NSMenuItem* allItem = [NSMenuItem new];
+    allItem.title = NSLocalizedStringFromTableInBundle(@"All Categories", nil, [NSBundle bundleForClass:[self class]], ""); //NSLocalizedString(@"All Categories", "title for 'all categories' item in preferences")
+    allItem.tag = -1;
+    [_browseCategory.menu insertItem:allItem atIndex:0];
+    if (allItem.tag == selectedIndex)
+        [_browseCategory selectItemAtIndex:0];
+    
+    [_browseCategory.menu insertItem:[NSMenuItem separatorItem] atIndex:1];
 
     return _prefsSheet;
 }
@@ -336,7 +367,16 @@
 }
 
 - (IBAction)okClick:(id)sender {
-    setPrefsIntValue(kPrefsCategory, _browseCategory.selectedItem.tag, PREFS_FORCE_SYNC);
+    NSInteger prevCategory = prefsIntValue(kPrefsCategory);
+    NSInteger newCategory = _browseCategory.selectedItem.tag;
+    if (prevCategory != newCategory) {
+        setPrefsIntValue(kPrefsCategory, _browseCategory.selectedItem.tag, PREFS_FORCE_SYNC);
+
+        [[PhotoSourceManager shared] cancelPhotoRequest];
+        [self cleanState];
+        [self retrieveNextPhoto];
+        [self animateLoading];
+    }
     [[NSApp mainWindow] endSheet:_prefsSheet];
 }
 

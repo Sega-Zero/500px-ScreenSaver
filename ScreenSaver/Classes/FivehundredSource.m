@@ -89,8 +89,16 @@
     
     NSInteger currentCategory = prefsIntValue(kPrefsCategory);
     if (_currentCategory != currentCategory) {
+        _nextPhotoHandler = completionHandler;
+        
         _currentCategory = currentCategory;
+        [_photosFeed removeAllObjects];
+        _nextPhotoIndex = 0;
+        _indexToContinue = -1;
+        _totalPages = 50;
         [self fetchFeed];
+        
+        return;
     }
 
     if (_photosFeed.count - _nextPhotoIndex < 3)
@@ -142,6 +150,8 @@
 - (void)cancelPhotoRequest
 {
     _cancelRequested = YES;
+    _nextPhotoHandler = nil;
+
     NSSet* tasks = [_networkTasks copy];
     _networkTasks = [NSMutableSet new];
     [tasks enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
@@ -168,7 +178,7 @@
 
     _fetchingFeed = NO;
     _currentPage = 1;
-    _totalPages = 100;
+    _totalPages = 50;
     _currentCategory = prefsIntValue(kPrefsCategory);
 
     _queue = dispatch_queue_create("500px-source-queue", DISPATCH_QUEUE_SERIAL);
