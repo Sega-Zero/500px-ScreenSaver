@@ -68,7 +68,7 @@
 
 - (void)randomizeFeed:(NSMutableArray*)photosFeed inRange:(NSRange)range
 {
-    if (_photosFeed.count == 0 || range.length == 0 || range.location + range.length >= _photosFeed.count)
+    if (_photosFeed.count == 0 || range.length == 0 || range.location + range.length > _photosFeed.count)
         return;
     NSUInteger base = range.location;
     NSUInteger count = range.length;
@@ -281,12 +281,14 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     for (NSInteger i = 0; i < 100; ++i) {
         _currentPage = arc4random() % _totalPages;
         page = @(_currentPage);
-        if (![_previousPages containsObject:page])
-            break;
+        if (![_previousPages containsObject:page]) {
+            [_previousPages addObject:page];
+            return;
+        }
     }
     
-    if (page)
-        [_previousPages addObject:page];
+    [_previousPages removeAllObjects];
+    [_previousPages addObject:page];
 }
 
 - (void)parseFeed:(NSDictionary*)feed
@@ -324,11 +326,8 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     _fetchingFeed = NO;
 
     if (parsedFeed.count < FEED_COUNT && _partialFeed.count != 0) {
-        for (NSInteger i = 0; i < _partialFeed.count; ++i) {
-            [parsedFeed addObject:_partialFeed[i]];
-            if (parsedFeed.count >= FEED_COUNT)
-                break;
-        }
+        [_partialFeed addObjectsFromArray:parsedFeed];
+        parsedFeed = _partialFeed;
         _partialFeed = nil;
     }
     
