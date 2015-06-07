@@ -12,6 +12,10 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Common.h"
 
+#import "CocoaLumberjack.h"
+#import "DDTTYLogger.h"
+#import "DDFileLogger.h"
+
 #define PHOTO_SHOW_INTERVAL 3.
 
 @implementation ScreenSaver500pxView
@@ -36,6 +40,15 @@
     self = [super initWithFrame:frame isPreview:isPreview];
     if (self) {
         registerPrefsDefaults(@{kPrefsCategory: @(-1)});
+        
+#if DEBUG
+        [DDLog addLogger:[DDTTYLogger sharedInstance] withLevel:DDLogLevelDebug];
+        DDFileLogger* ff = [[DDFileLogger alloc] init];
+        ff.doNotReuseLogFiles = YES;
+        ff.maximumFileSize = 0;
+        [ff.logFileManager setMaximumNumberOfLogFiles:100];
+        [DDLog addLogger:ff withLevel:DDLogLevelAll];
+#endif
         
         [self setAnimationTimeInterval:1/60.0];
         self.wantsLayer = YES;

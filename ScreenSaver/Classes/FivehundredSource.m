@@ -12,11 +12,15 @@
 #import "Common.h"
 #import "NSObject+Conversion.h"
 
+#import "CocoaLumberjack.h"
+#import "DDTTYLogger.h"
+#import "DDFileLogger.h"
+
 #define PAGE_COUNT 30
 #define FEED_COUNT 20
 
 #if DEBUG
-#define LOG NSLog
+#define LOG DDLogVerbose
 #else
 #define LOG(...) {}
 #endif
@@ -30,6 +34,7 @@
     NSInteger _totalPages;
     NSInteger _currentCategory;
     
+    NSMutableSet *_previousPages;
     NSTimeInterval _lastSaveFeed;
 
     NSMutableArray *_photosFeed;
@@ -101,11 +106,14 @@
         return;
     }
 
-    if (_photosFeed.count - _nextPhotoIndex < 3)
+    if (_photosFeed.count - _nextPhotoIndex < 3) {
+        LOG(@"[500px] feed is draining out, fetch next #failnot");
         [self fetchFeed];
+    }
     
     if (_photosFeed.count > 0) {
         if (_nextPhotoIndex >= _photosFeed.count) {
+            LOG(@"[500px] feed drained out, run once again #fail");
             [self randomizeFeed:_photosFeed];
             _nextPhotoIndex %= _photosFeed.count;
         }
@@ -119,6 +127,7 @@
                 if (_indexToContinue == -1)
                     _indexToContinue = _nextPhotoIndex;
                 
+                LOG(@"[500px] photos downloading stuck on %d, run downloaded once again #fail", (int)_indexToContinue);
                 [self randomizeFeed:_photosFeed inRange:NSMakeRange(0, _nextPhotoIndex)];
                 
                 _nextPhotoIndex = 0;
@@ -180,6 +189,8 @@
     _currentPage = 1;
     _totalPages = 50;
     _currentCategory = prefsIntValue(kPrefsCategory);
+    
+    _previousPages = [NSMutableSet setWithCapacity:10];
 
     _queue = dispatch_queue_create("500px-source-queue", DISPATCH_QUEUE_SERIAL);
     _queueTag = &_queueTag;
@@ -262,6 +273,20 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     return nil;
 }
 
+- (void)moveToNextRandomPage
+{
+    NSNumber* page = nil;
+    for (NSInteger i = 0; i < 100; ++i) {
+        _currentPage = arc4random() % _totalPages;
+        page = @(_currentPage);
+        if ([_previousPages containsObject:page])
+            break;
+    }
+    
+    if (page)
+        [_previousPages addObject:page];
+}
+
 - (void)parseFeed:(NSDictionary*)feed
 {
     if (!dispatch_get_specific(_queueTag)) {
@@ -295,7 +320,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     }
     
     if (parsedFeed.count < FEED_COUNT) {
-        _currentPage = arc4random() % _totalPages;
+        [self moveToNextRandomPage];
         LOG(@"[500px] feed length - %d, too small, get the next page", (int)parsedFeed.count);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self fetchFeed];
@@ -357,7 +382,7 @@ static NSString* categoryNameById(NSInteger n)
     if (_fetchingFeed)
         return;
     _fetchingFeed = YES;
-    _currentPage = arc4random() % _totalPages;
+    [self moveToNextRandomPage];
     
     NSURL *baseUrl = [NSURL URLWithString:@"https://api.500px.com"];
     NSString *methodPhotos = @"/v1/photos";
@@ -378,7 +403,7 @@ static NSString* categoryNameById(NSInteger n)
              [self parseFeed:responseObject];
          }
          failure:^(NSURLSessionDataTask *task, NSError *error) {
-             LOG(@"[500px] feed fetching failed");
+             LOG(@"[500px] feed fetching failed #fail %@", error);
              [_networkTasks removeObject:task];
              _fetchingFeed = NO;
          }];
@@ -395,7 +420,7 @@ static NSString* categoryNameById(NSInteger n)
     }
 
     if (_photosFeed.count == 0) {
-        LOG(@"[500px] no more photos to fetch");
+        LOG(@"[500px] no more photos to fetch #fail");
         return;
     }
 
@@ -460,7 +485,7 @@ static NSString* categoryNameById(NSInteger n)
                                     if (!s_self)
                                         return;
                                     
-                                    LOG(@"[500px] fetch next photo: %llu. %@", nextPhoto.photoHashId, error ? @"failed" : @"completed");
+                                    LOG(@"[500px] fetch next photo: %llu. %@", nextPhoto.photoHashId, error ? @"failed #fail" : @"completed");
                                     [s_self->_networkTasks removeObject:downloadTask];
                                     
                                     [s_self didFetchedPhoto:nextPhoto];
@@ -514,7 +539,7 @@ static NSString* categoryNameById(NSInteger n)
                                     if (!s_self)
                                         return;
                                     
-                                    LOG(@"[500px] fetch authorpic: %llu. %@", photoItem.photoHashId, error ? @"failed" : @"completed");
+                                    LOG(@"[500px] fetch authorpic: %llu. %@", photoItem.photoHashId, error ? @"failed #fail" : @"completed");
                                     [s_self->_networkTasks removeObject:downloadTask];
                                     
                                     NSString* cachedFilepath = photoItem.cachedAuthorPicFilepath;
@@ -539,6 +564,7 @@ static NSString* categoryNameById(NSInteger n)
         return;
 
     if (_indexToContinue != -1) {
+        LOG(@"[500px] resume normal flow after downloading failure %d #fail", (int)_indexToContinue);
         _nextPhotoIndex = _indexToContinue;
         _indexToContinue = -1;
     }
