@@ -38,6 +38,7 @@
     NSTimeInterval _lastSaveFeed;
 
     NSMutableArray *_photosFeed;
+    NSMutableArray *_partialFeed;
     NSInteger _nextPhotoIndex;
     NSInteger _indexToContinue; // if no downloaded photos available, save the position and spin for the start
 
@@ -98,6 +99,7 @@
         
         _currentCategory = currentCategory;
         [_photosFeed removeAllObjects];
+        _partialFeed = nil;
         _nextPhotoIndex = 0;
         _indexToContinue = -1;
         _totalPages = 50;
@@ -279,7 +281,7 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
     for (NSInteger i = 0; i < 100; ++i) {
         _currentPage = arc4random() % _totalPages;
         page = @(_currentPage);
-        if ([_previousPages containsObject:page])
+        if (![_previousPages containsObject:page])
             break;
     }
     
@@ -318,19 +320,32 @@ PhotoItem* photoById(NSArray* items, UInt64 n)
         [parsedFeed addObject:photoItem];
         LOG(@"[500px] feed item: %llu. %@", photoItem.photoHashId, photoItem.title);
     }
+
+    _fetchingFeed = NO;
+
+    if (parsedFeed.count < FEED_COUNT && _partialFeed.count != 0) {
+        for (NSInteger i = 0; i < _partialFeed.count; ++i) {
+            [parsedFeed addObject:_partialFeed[i]];
+            if (parsedFeed.count >= FEED_COUNT)
+                break;
+        }
+        _partialFeed = nil;
+    }
     
     if (parsedFeed.count < FEED_COUNT) {
+        _partialFeed = parsedFeed;
         [self moveToNextRandomPage];
         LOG(@"[500px] feed length - %d, too small, get the next page", (int)parsedFeed.count);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self fetchFeed];
         });
+        
+        return;
     }
     
     [self randomizeFeed:parsedFeed];
     _photosFeed = parsedFeed;
     _nextPhotoIndex = 0;
-    _fetchingFeed = NO;
     
     [self saveFeed];
     
@@ -394,7 +409,7 @@ static NSString* categoryNameById(NSInteger n)
                              @"consumer_key": @"DI7ANAHTalF5WUsa7vdaHiY4tM8kwduHT08vDaJm"
                              };
     
-    LOG(@"[500px] fetching feed");
+    LOG(@"[500px] fetching feed (%d)", (int)_currentPage);
     AFHTTPSessionManager* manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseUrl];
     NSURLSessionDataTask* task = [manager GET:methodPhotos parameters:params
          success:^(NSURLSessionDataTask *task, id responseObject) {
