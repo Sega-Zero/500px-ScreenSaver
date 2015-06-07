@@ -9,3 +9,10 @@
 #import <Foundation/Foundation.h>
 
 extern NSString* kCachePath;
+
+extern NSString* kPrefsCategory;
+
+NSInteger prefsIntValue(NSString* key);
+#define PREFS_FORCE_SYNC YES
+void setPrefsIntValue(NSString* key, NSInteger value, BOOL forceSync);
+void registerPrefsDefaults(NSDictionary* values);

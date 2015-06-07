@@ -10,6 +10,7 @@
 #import "PhotoSourceManager.h"
 #import "ScreenSaverLayerView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Common.h"
 
 #define PHOTO_SHOW_INTERVAL 3.
 
@@ -34,6 +35,8 @@
 {
     self = [super initWithFrame:frame isPreview:isPreview];
     if (self) {
+        registerPrefsDefaults(@{kPrefsCategory: @(-1)});
+        
         [self setAnimationTimeInterval:1/60.0];
         self.wantsLayer = YES;
         self.layer.backgroundColor = [NSColor blackColor].CGColor;
@@ -252,8 +255,6 @@
 
 - (NSWindow*)configureSheet
 {
-    ScreenSaverDefaults *defaults = [ScreenSaverDefaults defaultsForModuleWithName:[[NSBundle mainBundle] bundleIdentifier]];
-
     if (!_prefsSheet)
     {
         NSArray *topLevels = nil;
@@ -307,7 +308,7 @@
         return [obj1[@"localized"] localizedStandardCompare:obj2[@"localized"]];
     }];
 
-    NSInteger selectedIndex = [defaults integerForKey:@"category"];
+    NSInteger selectedIndex = prefsIntValue(kPrefsCategory);
     [menuItems enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         [_browseCategory addItemWithTitle:obj[@"localized"]];
         NSMenuItem *item = [_browseCategory lastItem];
@@ -326,9 +327,7 @@
 }
 
 - (IBAction)okClick:(id)sender {
-    ScreenSaverDefaults *defaults = [ScreenSaverDefaults defaultsForModuleWithName:[[NSBundle mainBundle] bundleIdentifier]];
-    [defaults setInteger:_browseCategory.selectedItem.tag forKey:@"category"];
-    [defaults synchronize];
+    setPrefsIntValue(kPrefsCategory, _browseCategory.selectedItem.tag, PREFS_FORCE_SYNC);
     [[NSApp mainWindow] endSheet:_prefsSheet];
 }
 
