@@ -1,0 +1,11 @@
+{
+  "title": "500px ScreenSaver",
+  "icon": "",
+  "icon-size": 80,
+  "background": "background.png",
+  "contents": [
+    { "x": 440, "y": 150, "type": "file", "path": "../README.md" },
+    { "x": 260, "y": 150, "type": "file", "path": "../Build/Products/Release/500px ScreenSaver.saver" }
+  ]
+
+}
