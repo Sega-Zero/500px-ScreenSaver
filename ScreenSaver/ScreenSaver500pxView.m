@@ -145,6 +145,15 @@
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
             NSImage* image = [[NSImage alloc] initWithContentsOfFile:photo.cachedFilepath];
             NSImage* authorImage = [[NSImage alloc] initWithContentsOfFile:photo.cachedAuthorPicFilepath];
+
+            //this is a very rare to happen, but sometimes after loading from file we may have an image with weird size (like {72, 150994944})
+            //couldn't find out the reason for this, drawInRect will fix an image and there won't be a layout ambiguity in avatar which may lead to main thread freezing
+            if (authorImage.size.width > authorImage.size.height || authorImage.size.height > authorImage.size.width)
+                authorImage = [NSImage imageWithSize:NSMakeSize(50, 50) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+                    [authorImage drawInRect:dstRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1. respectFlipped:YES hints:nil];
+                    return YES;
+                }];
+
             dispatch_async(dispatch_get_main_queue(), ^{
                 _loadingImageView.alphaValue = 0;
 
