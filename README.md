@@ -1,6 +1,7 @@
 # 500px ScreenSaver
 A simple OSX screensaver displaying an Editor's Choice photos from [500px.com](http://500px.com).<br>
-Minimum OSX version required: 10.10 Yosemite.
+Minimum OSX version required: 10.10 Yosemite.<br>
+Dmg package can be downloaded from the [release](https://github.com/Sega-Zero/500px-ScreenSaver/releases) page.
 
 #Trademarks
 
