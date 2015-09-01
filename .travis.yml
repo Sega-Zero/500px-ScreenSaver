@@ -1,14 +1,13 @@
 language: objective-c
 xcode_workspace: ScreenSaver.xcworkspace
 xcode_scheme: ScreenSaver
-
-install:
-  brew update
-  npm install -g appdmg
+install: brew update npm install -g appdmg
 before_deploy: ./DMG/build.sh
 deploy:
   provider: releases
-  file: "./DMG/500pxSreenSaver.dmg"
+  file: ./DMG/500pxSreenSaver.dmg
   skip_cleanup: true
   on:
     tags: true
+  api-key:
+    secure: jK2Ocxkqi93bFl481eIHy5vT8Ck96adlv95/tyaLKDIHyHiv/QivsKgKNiSL9UjdWDixflvt/fbHLhqGrsRGIH9EFWEmp4CMo6QEef0ahzGYYZP+J2eD2AzkZO1pWZwBDDoM5wdn0El75F3GAqBt4zluVegagWXypiVwi56zFJver5QrcG7o2nhapYenq87noOqkhuBKuUcjQp4FpVJa3+5GU/3YOmNqeGVoSS0K0LBA5DeR7khKKhQ+GxtOJqffF1J5RG3FvAirJ94c0JdquFJJkywFAM5ZCzmj0byq6jwpBKGUksXeIHHxbCboUDI/78z7S/dox0h7k2rvWMeLOQWDBKORL343qtmTwswglN7dqDmPXeU49hZjTIpD4YFP7V/i73Y9o02PjGZgoU5qcKYab4jJZ67bcnyZiP+bzTMYnCeQNngxcLh/9p1YRSwlXdY257Gsz/eVGqtXHiCilrRlx/uhwPLqE9XnMFEmmJKbVKNVM9ENssZmE7xy1QGs2GpR/XIFpxLbr1MA9c1t7fg2omiy6hmkt6pik0DG2LCQfvKcB8t1Hzi0bA0qaKCIVPtBYULe2JSLrbR62b9XbDxE9mTcIaMhf1t+Q3zFtruZscrYIeMT8JkUOtNK4lApFaQXMRRzv52mEGpkGQdm+FuDdKXtLHB3yqXDPOEnx8A=
