@@ -1,8 +1,7 @@
 language: objective-c
 xcode_workspace: ScreenSaver.xcworkspace
 xcode_scheme: ScreenSaver
-install: 
-  brew update 
+install:  
   npm install -g appdmg
 before_deploy: ./DMG/build.sh
 deploy:
