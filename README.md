@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Sega-Zero/500px-ScreenSaver.svg)](https://travis-ci.org/Sega-Zero/500px-ScreenSaver)
+
 # 500px ScreenSaver
 A simple OSX screensaver displaying an Editor's Choice photos from [500px.com](http://500px.com).<br>
 Minimum OSX version required: 10.10 Yosemite.<br>
